@@ -450,6 +450,7 @@ const App = {
         document.getElementById('cardWord').textContent = item.front;
         document.getElementById('cardPos').textContent = item.extra?.pos || '';
         document.getElementById('cardMeaning').textContent = item.back;
+        document.getElementById('cardHint').textContent = '点击卡片看释义';
         document.getElementById('cardFlip').classList.remove('flipped');
         document.getElementById('studyCurrent').textContent = this.currentIdx + 1;
     },
