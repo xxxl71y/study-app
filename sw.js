@@ -2,16 +2,13 @@
  * Service Worker - 离线支持
  */
 
-const CACHE_NAME = 'study-app-v1';
+const CACHE_NAME = 'study-app-v2';
 const ASSETS_TO_CACHE = [
     './',
     './index.html',
     './manifest.json',
     './css/style.css',
     './js/sm2.js',
-    './js/storage.js',
-    './js/quiz.js',
-    './js/stats.js',
     './js/app.js',
     './data/cet6-vocabulary.json'
 ];
