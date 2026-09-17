@@ -14,6 +14,7 @@ const App = {
     currentMode: '',   // review, learn, wrong
     isFlipped: false,
     wrongTab: 'word',
+    currentOptions: [], // 当前卡片的选择题选项
 
     // ========== 初始化 ==========
     async init() {
@@ -23,6 +24,7 @@ const App = {
         this.renderHome();
         this.renderMe();
         this.updateDate();
+        this.setupDailyPush();
     },
 
     // 加载学习包
@@ -93,8 +95,14 @@ const App = {
 
     removeWrongWord(wordId) {
         this.wrongWords = this.wrongWords.filter(w => w.id !== wordId);
+        // 同时删除卡片进度，待复习数量会相应减少
+        if (this.cards[wordId]) {
+            delete this.cards[wordId];
+            this.saveProgress();
+        }
         this.saveWrongBook();
         this.renderWrongList();
+        this.renderHome();
     },
 
     // 打卡相关
@@ -173,7 +181,8 @@ const App = {
         return {
             dailyNew: parseInt(localStorage.getItem('daily_new') || '50'),
             dailyReview: parseInt(localStorage.getItem('daily_review') || '100'),
-            feishuWebhook: localStorage.getItem('feishu_webhook') || ''
+            serverchanKey: localStorage.getItem('serverchan_key') || '',
+            pushTime: localStorage.getItem('push_time') || '20:00'
         };
     },
 
@@ -211,15 +220,6 @@ const App = {
                 text: '学习新单词',
                 sub: `今天还能学 ${Math.min(remainingNew, newAvailable)} 个`,
                 action: 'learn'
-            };
-        }
-        
-        if (this.getLearnedCount() >= 20) {
-            return {
-                icon: '📝',
-                text: '来个测验',
-                sub: '检验一下学习成果',
-                action: 'quiz'
             };
         }
         
@@ -262,23 +262,23 @@ const App = {
         return count;
     },
 
-    // 获取学习阶段
+    // 获取学习阶段（按已学比例）
     getPhaseInfo() {
-        const total = this.pkg.total_items;
+        const total = this.pkg.total_items || this.pkg.items?.length || 0;
         const learned = this.getLearnedCount();
-        const day = Math.floor(learned / 50) + 1;
-        const totalDays = Math.ceil(total / 50);
+        const percent = total > 0 ? (learned / total) * 100 : 0;
         
         let phaseName, desc;
-        if (day <= 5) { phaseName = '入门阶段'; desc = '熟悉节奏，建立习惯'; }
-        else if (day <= 10) { phaseName = '进阶阶段'; desc = '稳步推进，积累词汇'; }
-        else if (day <= 15) { phaseName = '深化阶段'; desc = '难度提升，巩固记忆'; }
-        else if (day <= 20) { phaseName = '冲刺阶段'; desc = '最后冲刺，全面掌握'; }
+        if (percent < 25) { phaseName = '入门阶段'; desc = '熟悉节奏，建立习惯'; }
+        else if (percent < 50) { phaseName = '进阶阶段'; desc = '稳步推进，积累词汇'; }
+        else if (percent < 75) { phaseName = '深化阶段'; desc = '难度提升，巩固记忆'; }
+        else if (percent < 100) { phaseName = '冲刺阶段'; desc = '最后冲刺，全面掌握'; }
         else { phaseName = '复习巩固'; desc = '间隔复习，长期记忆'; }
         
         return {
-            day: Math.min(day, totalDays),
-            totalDays: totalDays,
+            learned: learned,
+            total: total,
+            percent: Math.round(percent),
             phaseName: phaseName,
             desc: desc
         };
@@ -319,8 +319,8 @@ const App = {
         
         // 阶段信息
         const phase = this.getPhaseInfo();
-        document.getElementById('phaseTitle').textContent = `第 ${phase.day} / ${phase.totalDays} 天 · ${phase.phaseName}`;
-        document.getElementById('phaseDesc').textContent = phase.desc;
+        document.getElementById('phaseTitle').textContent = `${phase.learned} / ${phase.total} · ${phase.phaseName}`;
+        document.getElementById('phaseDesc').textContent = `${phase.percent}% · ${phase.desc}`;
     },
 
     updateDate() {
@@ -360,10 +360,6 @@ const App = {
     quickAction(action) {
         if (action === 'wrong') {
             this.switchPage('wrong');
-            return;
-        }
-        if (action === 'quiz') {
-            this.startQuiz();
             return;
         }
         this.openStudyModal(action);
@@ -420,11 +416,14 @@ const App = {
         
         this.studyQueue = queue;
         this.currentIdx = 0;
+        this.recentWords = [];
+        this.inMiniQuiz = false;
+        this.currentQuizItem = null;
         
         document.getElementById('studyTotal').textContent = queue.length;
         document.getElementById('studyCurrent').textContent = 0;
         document.getElementById('startArea').style.display = 'block';
-        document.getElementById('ratingArea').style.display = 'none';
+        document.getElementById('choiceArea').style.display = 'none';
         document.getElementById('cardFlip').classList.remove('flipped');
         document.getElementById('cardWord').textContent = '准备好了吗？';
         document.getElementById('cardHint').textContent = '点击开始按钮';
@@ -434,7 +433,7 @@ const App = {
 
     startCardSession() {
         document.getElementById('startArea').style.display = 'none';
-        document.getElementById('ratingArea').style.display = 'block';
+        document.getElementById('choiceArea').style.display = 'block';
         this.showCurrentCard();
     },
 
@@ -450,9 +449,29 @@ const App = {
         document.getElementById('cardWord').textContent = item.front;
         document.getElementById('cardPos').textContent = item.extra?.pos || '';
         document.getElementById('cardMeaning').textContent = item.back;
-        document.getElementById('cardHint').textContent = '点击卡片看释义';
+        document.getElementById('cardHint').textContent = '选择正确的释义';
         document.getElementById('cardFlip').classList.remove('flipped');
         document.getElementById('studyCurrent').textContent = this.currentIdx + 1;
+        
+        // 生成4选1选项
+        const wrongOptions = this.shuffle(
+            this.pkg.items.filter(i => i.id !== item.id).slice(0, 300)
+        ).slice(0, 3).map(i => i.back);
+        
+        this.currentOptions = this.shuffle([item.back, ...wrongOptions]);
+        
+        const optionsEl = document.getElementById('choiceOptions');
+        optionsEl.innerHTML = this.currentOptions.map((opt, i) => `
+            <button class="choice-btn" onclick="answerChoice(${i})">
+                <span class="choice-letter">${String.fromCharCode(65 + i)}</span>
+                <span class="choice-text">${opt}</span>
+            </button>
+        `).join('');
+        
+        // 重置反馈
+        const fb = document.getElementById('choiceFeedback');
+        fb.textContent = '';
+        fb.className = 'choice-feedback';
     },
 
     flipCard() {
@@ -461,9 +480,39 @@ const App = {
         document.getElementById('cardFlip').classList.toggle('flipped', this.isFlipped);
     },
 
-    rateCard(quality) {
+    answerChoice(idx) {
         const item = this.studyQueue[this.currentIdx];
         const cardId = item.id;
+        const selected = this.currentOptions[idx];
+        const isCorrect = selected === item.back;
+        
+        // 禁用所有选项，显示对错
+        const buttons = document.querySelectorAll('#choiceOptions .choice-btn');
+        buttons.forEach((btn, i) => {
+            btn.disabled = true;
+            if (this.currentOptions[i] === item.back) {
+                btn.classList.add('correct');
+            } else if (i === idx && !isCorrect) {
+                btn.classList.add('wrong');
+            }
+        });
+        
+        // 显示反馈
+        const fb = document.getElementById('choiceFeedback');
+        if (isCorrect) {
+            fb.textContent = '✅ 答对了！';
+            fb.className = 'choice-feedback correct';
+        } else {
+            fb.textContent = `❌ 答错了，正确答案：${item.back}`;
+            fb.className = 'choice-feedback wrong';
+        }
+        
+        // 翻面显示完整释义
+        document.getElementById('cardFlip').classList.add('flipped');
+        this.isFlipped = true;
+        
+        // 根据对错评分（答对=good/2，答错=again/0）
+        const quality = isCorrect ? 2 : 0;
         
         // 获取或创建卡片进度
         let card = this.cards[cardId] || {
@@ -496,9 +545,9 @@ const App = {
         }
         
         this.currentIdx++;
-        document.getElementById('cardFlip').classList.remove('flipped');
         
-        setTimeout(() => this.showCurrentCard(), 200);
+        // 1.5秒后下一个词
+        setTimeout(() => this.showCurrentCard(), 1500);
     },
 
     finishStudy() {
@@ -645,10 +694,24 @@ const App = {
     renderWrongList() {
         const list = document.getElementById('wrongList');
         const badge = document.getElementById('wrongTotalBadge');
+        const startBtn = document.getElementById('btnWrongStart');
+        const startSub = document.getElementById('wrongStartSub');
         
         let items = this.wrongTab === 'word' ? this.wrongWords : this.wrongQuiz;
         
         if (badge) badge.textContent = `${items.length} 个`;
+        
+        // 显示/隐藏开始刷错题按钮
+        if (startBtn && this.wrongTab === 'word') {
+            if (items.length > 0) {
+                startBtn.style.display = 'flex';
+                startSub.textContent = `${items.length} 个错词等待攻克`;
+            } else {
+                startBtn.style.display = 'none';
+            }
+        } else if (startBtn) {
+            startBtn.style.display = 'none';
+        }
         
         if (items.length === 0) {
             list.innerHTML = `
@@ -684,8 +747,96 @@ const App = {
         const settings = this.getSettings();
         document.getElementById('dailyNewCount').textContent = settings.dailyNew;
         document.getElementById('dailyReviewCount').textContent = settings.dailyReview;
-        document.getElementById('feishuWebhook').value = settings.feishuWebhook;
-        document.getElementById('currentPackageName').textContent = this.pkg.title;
+        document.getElementById('serverchanKey').value = settings.serverchanKey;
+        document.getElementById('pushTime').value = settings.pushTime;
+        
+        // 渲染学习包列表
+        this.renderPackageList();
+    },
+    
+    // 获取所有可用学习包
+    getAllPackages() {
+        const customPkgs = JSON.parse(localStorage.getItem('custom_packages') || '{}');
+        const packages = [];
+        const seen = new Set();
+        
+        // 内置包
+        packages.push({
+            id: 'cet6-vocabulary',
+            title: 'CET-6 核心词汇',
+            count: this.pkg?.package_id === 'cet6-vocabulary' 
+                ? (this.pkg.total_items || this.pkg.items?.length || 1768)
+                : 1768,
+            builtIn: true
+        });
+        seen.add('cet6-vocabulary');
+        
+        // 自定义包（去重，跳过和内置包同名的）
+        for (const id in customPkgs) {
+            if (seen.has(id)) continue;
+            const pkg = customPkgs[id];
+            packages.push({
+                id: id,
+                title: pkg.title,
+                count: pkg.items?.length || 0,
+                builtIn: false
+            });
+            seen.add(id);
+        }
+        
+        return packages;
+    },
+    
+    // 渲染学习包列表
+    renderPackageList() {
+        const list = document.getElementById('packageList');
+        if (!list) return;
+        
+        const packages = this.getAllPackages();
+        const currentId = this.pkg?.package_id || 'cet6-vocabulary';
+        
+        list.innerHTML = packages.map(pkg => `
+            <div class="package-item ${pkg.id === currentId ? 'active' : ''}" onclick="switchPackage('${pkg.id}')">
+                <div class="package-info">
+                    <div class="package-title">${pkg.title}</div>
+                    <div class="package-meta">${pkg.count} 词 · ${pkg.builtIn ? '内置' : '自定义'}</div>
+                </div>
+                ${pkg.id === currentId 
+                    ? '<span class="package-check">✓</span>' 
+                    : `<span class="package-delete" onclick="event.stopPropagation(); deletePackage('${pkg.id}')">✕</span>`
+                }
+            </div>
+        `).join('');
+    },
+    
+    // 切换学习包
+    switchPackage(pkgId) {
+        const currentId = this.pkg?.package_id;
+        if (pkgId === currentId) return;
+        
+        localStorage.setItem('current_package', pkgId);
+        location.reload();
+    },
+    
+    // 删除自定义学习包
+    deletePackage(pkgId) {
+        if (!confirm('确定删除这个学习包吗？学习进度也会一起删除。')) return;
+        
+        const customPkgs = JSON.parse(localStorage.getItem('custom_packages') || '{}');
+        delete customPkgs[pkgId];
+        localStorage.setItem('custom_packages', JSON.stringify(customPkgs));
+        
+        // 删除进度和错题
+        localStorage.removeItem(`progress_${pkgId}`);
+        localStorage.removeItem(`wrong_${pkgId}`);
+        
+        // 如果删的是当前包，切回默认
+        if (this.pkg?.package_id === pkgId) {
+            localStorage.setItem('current_package', 'cet6-vocabulary');
+            location.reload();
+        } else {
+            this.renderPackageList();
+        }
     },
 
     adjustDaily(type, delta) {
@@ -702,34 +853,94 @@ const App = {
         this.switchPage('me');
     },
 
-    saveWebhook() {
-        const val = document.getElementById('feishuWebhook').value.trim();
-        localStorage.setItem('feishu_webhook', val);
+    saveServerchanKey() {
+        const val = document.getElementById('serverchanKey').value.trim();
+        localStorage.setItem('serverchan_key', val);
+    },
+    
+    savePushTime() {
+        const val = document.getElementById('pushTime').value;
+        localStorage.setItem('push_time', val);
+        this.setupDailyPush();
     },
 
-    async testFeishu() {
-        const webhook = document.getElementById('feishuWebhook').value.trim();
-        if (!webhook) {
-            alert('请先填写 Webhook 地址');
+    async testServerchan() {
+        const key = document.getElementById('serverchanKey').value.trim();
+        if (!key) {
+            alert('请先填写 SendKey');
             return;
         }
         
         try {
-            const res = await fetch(webhook, {
+            const formData = new URLSearchParams();
+            formData.append('title', '✅ 推送测试成功');
+            formData.append('desp', 'AI 学习助手已连接，微信推送正常工作！');
+            
+            const res = await fetch(`https://sctapi.ftqq.com/${key}.send`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    msg_type: 'text',
-                    content: { text: '✅ 飞书推送测试成功！\nAI 学习助手已连接。' }
-                })
+                body: formData
             });
-            if (res.ok) {
-                alert('推送测试成功！');
+            const data = await res.json();
+            if (data.code === 0) {
+                alert('推送测试成功！请查看微信');
             } else {
-                alert('推送失败，请检查地址');
+                alert('推送失败：' + (data.message || '未知错误'));
             }
         } catch (e) {
             alert('推送失败：' + e.message);
+        }
+    },
+    
+    // 每日推送
+    setupDailyPush() {
+        if (this.pushTimer) {
+            clearInterval(this.pushTimer);
+            this.pushTimer = null;
+        }
+        
+        const settings = this.getSettings();
+        if (!settings.serverchanKey || !settings.pushTime) return;
+        
+        const [hour, minute] = settings.pushTime.split(':').map(Number);
+        
+        // 每分钟检查一次是否到点
+        this.pushTimer = setInterval(() => {
+            const now = new Date();
+            if (now.getHours() === hour && now.getMinutes() === minute) {
+                const lastPush = localStorage.getItem('last_push_date');
+                const today = now.toDateString();
+                if (lastPush !== today) {
+                    this.sendDailyPush();
+                    localStorage.setItem('last_push_date', today);
+                }
+            }
+        }, 60000);
+    },
+    
+    async sendDailyPush() {
+        const settings = this.getSettings();
+        if (!settings.serverchanKey) return;
+        
+        const due = this.getDueCount();
+        const newAvailable = this.getNewCount();
+        const wrong = this.wrongWords.length;
+        const todayLearned = this.getTodayLearned();
+        const streak = this.getStreak();
+        
+        const title = `📚 学习提醒 · 连续${streak}天`;
+        const desp = `## 今日学习\n\n- 🔄 待复习：**${due}** 个\n- 🆕 新学：**${newAvailable}** 个\n- ❌ 错题：**${wrong}** 个\n- ✅ 今日已学：**${todayLearned}** 个\n\n---\n\n*打开学习助手，开始今天的学习吧！*`;
+        
+        try {
+            const formData = new URLSearchParams();
+            formData.append('title', title);
+            formData.append('desp', desp);
+            
+            await fetch(`https://sctapi.ftqq.com/${settings.serverchanKey}.send`, {
+                method: 'POST',
+                body: formData
+            });
+        } catch (e) {
+            console.warn('每日推送失败:', e);
         }
     },
 
@@ -836,17 +1047,21 @@ function switchPage(p) { App.switchPage(p); }
 function startMainAction() { App.startMainAction(); }
 function quickAction(a) { App.quickAction(a); }
 function flipCard() { App.flipCard(); }
-function rateCard(q) { App.rateCard(q); }
+function answerChoice(i) { App.answerChoice(i); }
 function closeStudy() { App.closeStudy(); }
 function startCardSession() { App.startCardSession(); }
 function startQuiz() { App.startQuiz(); }
 function closeQuiz() { App.closeQuiz(); }
 function switchWrongTab(t) { App.switchWrongTab(t); }
+function startWrongQuiz() { App.openStudyModal('wrong'); }
 function adjustDaily(t, d) { App.adjustDaily(t, d); }
 function editPlan() { App.editPlan(); }
-function saveWebhook() { App.saveWebhook(); }
-function testFeishu() { App.testFeishu(); }
+function saveServerchanKey() { App.saveServerchanKey(); }
+function savePushTime() { App.savePushTime(); }
+function testServerchan() { App.testServerchan(); }
 function importPackage(e) { App.importPackage(e); }
+function switchPackage(id) { App.switchPackage(id); }
+function deletePackage(id) { App.deletePackage(id); }
 function exportData() { App.exportData(); }
 function importData(e) { App.importData(e); }
 function resetAll() { App.resetAll(); }
