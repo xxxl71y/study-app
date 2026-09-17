@@ -39,7 +39,7 @@ jobs:
             -storepass studypass -keypass studypass \
             -dname "CN=StudyApp, OU=Dev, O=StudyApp, L=BJ, ST=BJ, C=CN"
 
-      - name: Create Bubblewrap config
+      - name: Create twa-manifest.json
         run: |
           cat > twa-manifest.json << 'ENDOFFILE'
           {
@@ -63,30 +63,30 @@ jobs:
             "appVersionName": "1.0",
             "trustedWebActivity": {
               "enabled": true
-            },
-            "dependencies": {
-              "androidSdk": {
-                "path": ""
-              },
-              "jdk": {
-                "path": ""
-              }
             }
           }
           ENDOFFILE
-          cat twa-manifest.json
 
-      - name: Init Bubblewrap project
+      - name: Pre-configure Bubblewrap (skip interactive prompts)
+        env:
+          JAVA_HOME: ${{ env.JAVA_HOME }}
+          ANDROID_HOME: ${{ env.ANDROID_HOME }}
         run: |
-          echo "y" | bubblewrap init --manifest=twa-manifest.json || true
-          ls -la
+          mkdir -p ~/.bubblewrap
+          cat > ~/.bubblewrap/config.json << EOF
+          {
+            "jdkPath": "$JAVA_HOME",
+            "androidSdkPath": "$ANDROID_HOME"
+          }
+          EOF
+          cat ~/.bubblewrap/config.json
+
+      - name: Init TWA project
+        run: yes | bubblewrap init --manifest=twa-manifest.json || true
 
       - name: Build APK
-        run: |
-          echo "y" | bubblewrap build --manifest=twa-manifest.json --universalApk --skipPwaValidation
+        run: yes | bubblewrap build --manifest=twa-manifest.json --universalApk --skipPwaValidation
         env:
-          ANDROID_HOME: ${{ env.ANDROID_HOME }}
-          JAVA_HOME: ${{ env.JAVA_HOME }}
           STOREPASS: studypass
           KEYPASS: studypass
 
