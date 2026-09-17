@@ -110,8 +110,9 @@ body {
 }
 
 .today-tasks {
-    display: flex;
-    justify-content: space-around;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
     background: var(--card);
     border-radius: var(--radius);
     padding: 16px;
@@ -124,6 +125,7 @@ body {
     flex-direction: column;
     align-items: center;
     gap: 6px;
+    padding: 8px 4px;
 }
 
 .task-dot {
