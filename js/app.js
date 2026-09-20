@@ -543,12 +543,25 @@ const App = {
             fb.className = 'choice-feedback wrong';
         }
         
+        // 先记录答题时卡片是否被翻过（用来判断 quality）
+        const wasFlipped = this.isFlipped;
+        
         // 翻面显示完整释义
         document.getElementById('cardFlip').classList.add('flipped');
         this.isFlipped = true;
         
-        // 根据对错评分（答对=good/2，答错=again/0）
-        const quality = isCorrect ? 2 : 0;
+        // 根据对错和是否翻面评分：
+        // 没翻面就答对 = 3（太简单，一眼就会）
+        // 翻面后答对 = 2（还不错，想起来了）
+        // 答错 = 0（忘记了）
+        let quality;
+        if (!isCorrect) {
+            quality = 0;
+        } else if (!wasFlipped) {
+            quality = 3;
+        } else {
+            quality = 2;
+        }
         
         // 获取或创建卡片进度
         let card = this.cards[cardId] || {
