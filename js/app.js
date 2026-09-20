@@ -366,6 +366,13 @@ const App = {
         document.getElementById('phaseTitle').textContent = phase.phaseName;
         document.getElementById('phaseWords').textContent = `${phase.learned} / ${phase.total} 词`;
         document.getElementById('phasePercent').textContent = phase.percent + '%';
+        // 阶段矩形圆角环
+        const phaseRect = document.getElementById('phaseRect');
+        const circumference = 819; // 圆角矩形周长（viewBox 320x130, rx24）
+        if (phaseRect) {
+            const phaseOffset = circumference - (phase.percent / 100) * circumference;
+            phaseRect.style.strokeDashoffset = phaseOffset;
+        }
     },
 
     updateDate() {

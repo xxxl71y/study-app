@@ -112,23 +112,35 @@ body {
     color: var(--text2);
 }
 
-/* 阶段卡片 */
+/* 阶段卡片（矩形圆角环） */
 .phase-card {
+    position: relative;
     width: 100%;
     flex-shrink: 0;
     background: var(--card);
     border-radius: 24px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.04);
     margin: 6px 0;
-    padding: 18px 16px;
-    text-align: center;
+    overflow: hidden;
+}
+
+.phase-ring-rect {
+    display: block;
+    width: 100%;
+    height: auto;
 }
 
 .phase-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 6px;
+    width: 100%;
 }
 
 .phase-percent {
