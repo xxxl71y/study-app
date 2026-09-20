@@ -20,44 +20,46 @@
     --radius: 16px;
 }
 
+html, body {
+    height: 100%;
+    overflow: hidden;
+    overscroll-behavior: none;
+}
+
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
     background: var(--bg);
     color: var(--text);
-    min-height: 100vh;
-    overflow-y: auto;
-    overscroll-behavior-y: contain;
 }
 
 /* 页面切换 */
 .page {
     display: none;
     animation: fadeIn 0.3s ease;
-    height: calc(100vh - 60px);
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
+    height: calc(100% - 60px);
+    overflow: hidden;
 }
 .page.active {
     display: flex;
     flex-direction: column;
 }
 
-/* 所有页面隐藏滚动条但可滚动 */
+/* 主页和错题本页面禁止滚动 */
 #page-home,
-#page-me,
 #page-wrong {
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-}
-#page-home::-webkit-scrollbar,
-#page-me::-webkit-scrollbar,
-#page-wrong::-webkit-scrollbar {
-    display: none;
+    overflow: hidden !important;
 }
 
-/* 错题本页面本身不滚动，只有列表滚动 */
-#page-wrong {
-    overflow: hidden;
+/* 我的页面可内部滚动，隐藏滚动条 */
+#page-me {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    overscroll-behavior: contain;
+}
+#page-me::-webkit-scrollbar {
+    display: none;
 }
 
 @keyframes fadeIn {
@@ -68,6 +70,8 @@ body {
 .app-main {
     padding: 0 20px;
     padding-bottom: 10px;
+    height: 100%;
+    overflow: hidden;
 }
 
 /* ========== 首页 ========== */
