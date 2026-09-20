@@ -122,7 +122,7 @@ body {
 
 .ring-card {
     flex: 1;
-    background: transparent;
+    background: var(--card);
     border-radius: var(--radius);
     padding: 14px 10px;
     display: flex;
@@ -131,6 +131,7 @@ body {
     justify-content: center;
     align-self: stretch;
     position: relative;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
 }
 
 .ring-card.phase {
