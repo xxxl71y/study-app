@@ -130,6 +130,7 @@ body {
     align-items: center;
     justify-content: center;
     box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    align-self: stretch;
 }
 
 .ring-card.phase {
@@ -137,6 +138,13 @@ body {
     align-items: center;
     justify-content: center;
     gap: 6px;
+    align-self: stretch;
+}
+
+.phase-detail {
+    text-align: center;
+    margin-top: 4px;
+    flex-shrink: 0;
 }
 
 .progress-ring {
@@ -169,11 +177,6 @@ body {
     font-size: 14px;
     color: var(--text2);
     margin-top: 2px;
-}
-
-.phase-detail {
-    text-align: center;
-    margin-top: 4px;
 }
 
 .phase-title {
