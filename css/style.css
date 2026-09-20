@@ -122,14 +122,13 @@ body {
 
 .ring-card {
     flex: 1;
-    background: var(--card);
+    background: transparent;
     border-radius: var(--radius);
     padding: 14px 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
     align-self: stretch;
     position: relative;
 }
