@@ -365,12 +365,12 @@ const App = {
         const phase = this.getPhaseInfo();
         document.getElementById('phaseTitle').textContent = phase.phaseName;
         document.getElementById('phaseWords').textContent = `${phase.learned} / ${phase.total} 词`;
-        // 阶段圆角矩形环
-        const phaseRect = document.getElementById('phaseRect');
-        const circumference = 819; // 圆角矩形周长（viewBox 320x130, rx24）
-        if (phaseRect) {
+        // 阶段圆环
+        const phaseCircle = document.getElementById('phaseCircle');
+        const circumference = 439.8; // 圆周长（r=70）
+        if (phaseCircle) {
             const phaseOffset = circumference - (phase.percent / 100) * circumference;
-            phaseRect.style.strokeDashoffset = phaseOffset;
+            phaseCircle.style.strokeDashoffset = phaseOffset;
         }
         const phasePercentEl = document.getElementById('phasePercent');
         if (phasePercentEl) phasePercentEl.textContent = phase.percent + '%';
