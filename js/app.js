@@ -181,6 +181,7 @@ const App = {
         return {
             dailyNew: parseInt(localStorage.getItem('daily_new') || '50'),
             dailyReview: parseInt(localStorage.getItem('daily_review') || '100'),
+            studyOrder: localStorage.getItem('study_order') || 'alpha',
             serverchanKey: localStorage.getItem('serverchan_key') || '',
             pushTime: localStorage.getItem('push_time') || '20:00'
         };
@@ -398,7 +399,7 @@ const App = {
                     if (item) dueItems.push(item);
                 }
             }
-            queue = this.shuffle(dueItems).slice(0, settings.dailyReview || 999);
+            queue = this.sortByOrder(dueItems).slice(0, settings.dailyReview || 999);
             document.getElementById('studyModalTitle').textContent = '复习';
         } else if (mode === 'learn') {
             // 新单词
@@ -409,7 +410,7 @@ const App = {
             }
             const learned = new Set(Object.keys(this.cards));
             const newItems = this.pkg.items.filter(i => !learned.has(i.id));
-            queue = newItems.slice(0, remaining);
+            queue = this.sortByOrder(newItems).slice(0, remaining);
             document.getElementById('studyModalTitle').textContent = '学习新单词';
         } else if (mode === 'wrong') {
             // 错题
@@ -568,7 +569,6 @@ const App = {
         // 提示
         const count = this.studyQueue.length;
         if (count > 0) {
-            // 简单的完成提示，用原生alert
             setTimeout(() => alert(`完成了 ${count} 个，继续加油！`), 100);
         }
     },
@@ -586,19 +586,15 @@ const App = {
             return;
         }
         
-        // 从已学单词中抽题
         const learnedIds = Object.keys(this.cards);
         const shuffled = this.shuffle(learnedIds).slice(0, Math.min(10, learnedIds.length));
         
         this.quizQuestions = shuffled.map(id => {
             const item = this.pkg.items.find(i => i.id === id);
-            // 生成选项
             const wrongOptions = this.shuffle(
                 this.pkg.items.filter(i => i.id !== id).slice(0, 100)
             ).slice(0, 3).map(i => i.back);
-            
             const options = this.shuffle([item.back, ...wrongOptions]);
-            
             return {
                 id: id,
                 word: item.front,
@@ -659,7 +655,6 @@ const App = {
         if (isCorrect) {
             this.quizScore++;
         } else {
-            // 加入错题本
             this.addWrongWord(q.id, '测验');
         }
         
@@ -712,7 +707,6 @@ const App = {
         
         if (badge) badge.textContent = `${items.length} 个`;
         
-        // 显示/隐藏开始刷错题按钮
         if (startBtn && this.wrongTab === 'word') {
             if (items.length > 0) {
                 startBtn.style.display = 'flex';
@@ -762,17 +756,19 @@ const App = {
         document.getElementById('serverchanKey').value = settings.serverchanKey;
         document.getElementById('pushTime').value = settings.pushTime;
         
+        // 学习顺序单选
+        const radios = document.querySelectorAll('input[name="studyOrder"]');
+        radios.forEach(r => r.checked = r.value === settings.studyOrder);
+        
         // 渲染学习包列表
         this.renderPackageList();
     },
     
-    // 获取所有可用学习包
     getAllPackages() {
         const customPkgs = JSON.parse(localStorage.getItem('custom_packages') || '{}');
         const packages = [];
         const seen = new Set();
         
-        // 内置包
         packages.push({
             id: 'cet6-vocabulary',
             title: 'CET-6 核心词汇',
@@ -783,7 +779,6 @@ const App = {
         });
         seen.add('cet6-vocabulary');
         
-        // 自定义包（去重，跳过和内置包同名的）
         for (const id in customPkgs) {
             if (seen.has(id)) continue;
             const pkg = customPkgs[id];
@@ -799,7 +794,6 @@ const App = {
         return packages;
     },
     
-    // 渲染学习包列表
     renderPackageList() {
         const list = document.getElementById('packageList');
         if (!list) return;
@@ -821,7 +815,6 @@ const App = {
         `).join('');
     },
     
-    // 切换学习包
     switchPackage(pkgId) {
         const currentId = this.pkg?.package_id;
         if (pkgId === currentId) return;
@@ -830,7 +823,6 @@ const App = {
         location.reload();
     },
     
-    // 删除自定义学习包
     deletePackage(pkgId) {
         if (!confirm('确定删除这个学习包吗？学习进度也会一起删除。')) return;
         
@@ -838,11 +830,9 @@ const App = {
         delete customPkgs[pkgId];
         localStorage.setItem('custom_packages', JSON.stringify(customPkgs));
         
-        // 删除进度和错题
         localStorage.removeItem(`progress_${pkgId}`);
         localStorage.removeItem(`wrong_${pkgId}`);
         
-        // 如果删的是当前包，切回默认
         if (this.pkg?.package_id === pkgId) {
             localStorage.setItem('current_package', 'cet6-vocabulary');
             location.reload();
@@ -874,6 +864,13 @@ const App = {
         const val = document.getElementById('pushTime').value;
         localStorage.setItem('push_time', val);
         this.setupDailyPush();
+    },
+
+    saveStudyOrder() {
+        const selected = document.querySelector('input[name="studyOrder"]:checked');
+        if (selected) {
+            localStorage.setItem('study_order', selected.value);
+        }
     },
 
     async testServerchan() {
@@ -915,7 +912,6 @@ const App = {
         
         const [hour, minute] = settings.pushTime.split(':').map(Number);
         
-        // 每分钟检查一次是否到点
         this.pushTimer = setInterval(() => {
             const now = new Date();
             if (now.getHours() === hour && now.getMinutes() === minute) {
@@ -1051,6 +1047,17 @@ const App = {
             [a[i], a[j]] = [a[j], a[i]];
         }
         return a;
+    },
+
+    sortByOrder(arr) {
+        const settings = this.getSettings();
+        if (settings.studyOrder === 'random') {
+            return this.shuffle(arr);
+        }
+        // 默认按首字母排序（不区分大小写）
+        return [...arr].sort((a, b) => {
+            return a.front.toLowerCase().localeCompare(b.front.toLowerCase());
+        });
     }
 };
 
@@ -1072,6 +1079,7 @@ function saveWebhook() { App.saveWebhook(); }
 function testFeishu() { App.testFeishu(); }
 function saveServerchanKey() { App.saveServerchanKey(); }
 function savePushTime() { App.savePushTime(); }
+function saveStudyOrder() { App.saveStudyOrder(); }
 function testServerchan() { App.testServerchan(); }
 function importPackage(e) { App.importPackage(e); }
 function editUsername() {
