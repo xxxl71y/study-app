@@ -132,6 +132,7 @@ body {
 }
 
 .ring-card.phase {
+    flex-direction: column !important;
     align-items: center;
     gap: 6px;
 }
