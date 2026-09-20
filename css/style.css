@@ -124,20 +124,31 @@ body {
 .today-tasks {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    background: var(--card);
-    border-radius: var(--radius);
-    padding: 16px;
+    gap: 10px;
     margin-bottom: 20px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
 }
 
 .task-item {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 14px 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 6px;
-    padding: 8px 4px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.task-item:active {
+    transform: scale(0.96);
+}
+
+.task-top {
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 
 .task-dot {
@@ -151,14 +162,38 @@ body {
 .task-dot.wrong { background: var(--danger); }
 
 .task-name {
-    font-size: 13px;
+    font-size: 12px;
     color: var(--text2);
+    font-weight: 500;
 }
 
-.task-count {
-    font-size: 20px;
+.task-count-row {
+    display: flex;
+    align-items: baseline;
+    gap: 2px;
+}
+
+.task-done {
+    font-size: 22px;
     font-weight: 700;
     color: var(--text);
+}
+
+.task-sep {
+    font-size: 14px;
+    color: var(--text3);
+    font-weight: 500;
+}
+
+.task-total {
+    font-size: 14px;
+    color: var(--text3);
+    font-weight: 500;
+}
+
+.task-sub {
+    font-size: 11px;
+    color: var(--text3);
 }
 
 /* 主按钮 */
