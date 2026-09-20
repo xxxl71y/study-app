@@ -5,6 +5,13 @@
     -webkit-tap-highlight-color: transparent;
 }
 
+html, body {
+    height: 100%;
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+}
+
 :root {
     --primary: #4f46e5;
     --primary-light: #818cf8;
@@ -41,22 +48,22 @@ body {
     flex-direction: column;
 }
 
-/* 所有页面隐藏滚动条但可滚动 */
+/* 所有页面禁止滚动 */
 #page-home,
-#page-me,
 #page-wrong {
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-}
-#page-home::-webkit-scrollbar,
-#page-me::-webkit-scrollbar,
-#page-wrong::-webkit-scrollbar {
-    display: none;
+    overflow: hidden !important;
 }
 
-/* 错题本页面本身不滚动，只有列表滚动 */
-#page-wrong {
-    overflow: hidden;
+/* 我的页面需要内部滚动但隐藏滚动条 */
+#page-me {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    overscroll-behavior: none;
+}
+#page-me::-webkit-scrollbar {
+    display: none;
 }
 
 @keyframes fadeIn {
