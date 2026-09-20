@@ -45,20 +45,39 @@
             </div>
 
             <div class="today-tasks">
-                <div class="task-item">
-                    <span class="task-dot review"></span>
-                    <span class="task-name">待复习</span>
-                    <span class="task-count" id="dueCount">0</span>
+                <div class="task-item" onclick="quickAction('review')">
+                    <div class="task-top">
+                        <span class="task-dot review"></span>
+                        <span class="task-name">复习</span>
+                    </div>
+                    <div class="task-count-row">
+                        <span class="task-done" id="reviewedCount">0</span>
+                        <span class="task-sep">/</span>
+                        <span class="task-total" id="dueCount">0</span>
+                    </div>
+                    <div class="task-sub">待复习</div>
                 </div>
-                <div class="task-item">
-                    <span class="task-dot new"></span>
-                    <span class="task-name">今日新学</span>
-                    <span class="task-count" id="newCount">0</span>
+                <div class="task-item" onclick="quickAction('learn')">
+                    <div class="task-top">
+                        <span class="task-dot new"></span>
+                        <span class="task-name">今日新学</span>
+                    </div>
+                    <div class="task-count-row">
+                        <span class="task-done" id="todayLearnedCount">0</span>
+                        <span class="task-sep">/</span>
+                        <span class="task-total" id="dailyNewTotal">50</span>
+                    </div>
+                    <div class="task-sub">目标</div>
                 </div>
-                <div class="task-item">
-                    <span class="task-dot wrong"></span>
-                    <span class="task-name">错题</span>
-                    <span class="task-count" id="wrongCount">0</span>
+                <div class="task-item" onclick="quickAction('wrong')">
+                    <div class="task-top">
+                        <span class="task-dot wrong"></span>
+                        <span class="task-name">错题</span>
+                    </div>
+                    <div class="task-count-row">
+                        <span class="task-done" id="wrongCount">0</span>
+                    </div>
+                    <div class="task-sub">待攻克</div>
                 </div>
             </div>
 
@@ -164,14 +183,6 @@
                         <button onclick="adjustDaily('new', -10)">−</button>
                         <span id="dailyNewCount">50</span>
                         <button onclick="adjustDaily('new', 10)">+</button>
-                    </div>
-                </div>
-                <div class="setting-row">
-                    <span>复习上限</span>
-                    <div class="counter">
-                        <button onclick="adjustDaily('review', -20)">−</button>
-                        <span id="dailyReviewCount">100</span>
-                        <button onclick="adjustDaily('review', 20)">+</button>
                     </div>
                 </div>
                 <div class="setting-row">
@@ -321,17 +332,14 @@
     <script>
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' }).then((reg) => {
-                // 检测到新版本时自动刷新
                 reg.addEventListener('updatefound', () => {
                     const newWorker = reg.installing;
                     newWorker.addEventListener('statechange', () => {
                         if (newWorker.state === 'activated') {
-                            // 新版本激活后，刷新页面使用最新代码
                             window.location.reload();
                         }
                     });
                 });
-                // 每次加载都检查更新
                 if (reg.waiting) {
                     reg.waiting.postMessage({ type: 'SKIP_WAITING' });
                 }
