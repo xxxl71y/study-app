@@ -141,12 +141,14 @@ body {
 }
 
 .ring-footer {
-    min-height: 34px;
+    height: 42px;
+    flex-shrink: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
+    overflow: hidden;
 }
 
 .progress-ring {
@@ -186,12 +188,15 @@ body {
     font-size: 15px;
     font-weight: 700;
     color: #0c4a6e;
-    margin-bottom: 2px;
+    line-height: 1.2;
+    white-space: nowrap;
 }
 
 .phase-words {
     font-size: 13px;
     color: #0369a1;
+    line-height: 1.2;
+    white-space: nowrap;
 }
 
 /* 今日任务 */
