@@ -312,7 +312,7 @@ const App = {
         
         // 更新DOM
         document.getElementById('streakDays').textContent = streak;
-        document.getElementById('username').textContent = this.getUsername();
+        document.getElementById('welcomeText').textContent = '你好，' + this.getUsername() + ' 👋';
         document.getElementById('dueCount').textContent = due;
         document.getElementById('newCount').textContent = actualNew;
         document.getElementById('wrongCount').textContent = wrong;
@@ -750,6 +750,7 @@ const App = {
 
     // ========== 我的页面 ==========
     renderMe() {
+        document.getElementById('userName').textContent = this.getUsername();
         document.getElementById('totalDays').textContent = this.getTotalDays();
         document.getElementById('totalWords').textContent = this.getLearnedCount();
         document.getElementById('masteredWords').textContent = this.getMasteredCount();
@@ -1075,10 +1076,11 @@ function testServerchan() { App.testServerchan(); }
 function importPackage(e) { App.importPackage(e); }
 function editUsername() {
     const current = App.getUsername();
-    const name = prompt('输入你的名字', current);
+    const name = prompt('输入你的昵称', current);
     if (name !== null && name.trim()) {
         App.setUsername(name);
-        document.getElementById('username').textContent = App.getUsername();
+        document.getElementById('welcomeText').textContent = '你好，' + App.getUsername() + ' 👋';
+        document.getElementById('userName').textContent = App.getUsername();
     }
 }
 function switchPackage(id) { App.switchPackage(id); }
