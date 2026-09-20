@@ -365,15 +365,7 @@ const App = {
         const phase = this.getPhaseInfo();
         document.getElementById('phaseTitle').textContent = phase.phaseName;
         document.getElementById('phaseWords').textContent = `${phase.learned} / ${phase.total} 词`;
-        // 阶段圆环
-        const phaseCircle = document.getElementById('phaseCircle');
-        const circumference = 439.8; // 圆周长（r=70）
-        if (phaseCircle) {
-            const phaseOffset = circumference - (phase.percent / 100) * circumference;
-            phaseCircle.style.strokeDashoffset = phaseOffset;
-        }
-        const phasePercentEl = document.getElementById('phasePercent');
-        if (phasePercentEl) phasePercentEl.textContent = phase.percent + '%';
+        document.getElementById('phasePercent').textContent = phase.percent + '%';
     },
 
     updateDate() {

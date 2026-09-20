@@ -3,7 +3,7 @@
  * 策略：全部 network first（在线拿最新，离线回退缓存）
  */
 
-const CACHE_NAME = 'study-app-v27';
+const CACHE_NAME = 'study-app-v28';
 const ASSETS_TO_CACHE = [
     './',
     './index.html',
