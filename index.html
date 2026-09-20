@@ -19,10 +19,7 @@
                     <span class="streak-icon">🔥</span>
                     <span class="streak-text">连续打卡 <b id="streakDays">0</b> 天</span>
                 </div>
-                <div class="username-row">
-                    <span class="username" id="username" onclick="editUsername()">同学</span>
-                    <span class="username-edit" onclick="editUsername()">✏️</span>
-                </div>
+                <div class="welcome-text" id="welcomeText">你好，同学 👋</div>
                 <div class="date-text" id="todayDate"></div>
             </div>
 
@@ -130,6 +127,14 @@
         <div class="page" id="page-me">
             <div class="page-header">
                 <h2>👤 我的</h2>
+            </div>
+
+            <div class="user-profile" onclick="editUsername()">
+                <div class="user-avatar" id="userAvatar">📚</div>
+                <div class="user-info">
+                    <div class="user-name" id="userName">同学</div>
+                    <div class="user-edit-hint">点击修改昵称 ✏️</div>
+                </div>
             </div>
 
             <div class="me-stats">
