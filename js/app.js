@@ -181,10 +181,24 @@ const App = {
         return parseInt(localStorage.getItem(`reviewed_${this.getToday()}`) || '0');
     },
 
-    incrementReviewed() {
+    getTodayReviewedIds() {
+        const key = `reviewed_ids_${this.getToday()}`;
+        return JSON.parse(localStorage.getItem(key) || '[]');
+    },
+
+    incrementReviewed(wordId) {
         const key = `reviewed_${this.getToday()}`;
         const cur = parseInt(localStorage.getItem(key) || '0');
         localStorage.setItem(key, cur + 1);
+        
+        // 记录今日已复习的词ID
+        const idsKey = `reviewed_ids_${this.getToday()}`;
+        const ids = JSON.parse(localStorage.getItem(idsKey) || '[]');
+        if (wordId && !ids.includes(wordId)) {
+            ids.push(wordId);
+            localStorage.setItem(idsKey, JSON.stringify(ids));
+        }
+        
         this.markLearned();
     },
 
@@ -327,7 +341,7 @@ const App = {
         document.getElementById('streakDays').textContent = streak;
         document.getElementById('welcomeText').textContent = '你好，' + this.getUsername() + ' 👋';
         document.getElementById('reviewedCount').textContent = this.getTodayReviewed();
-        document.getElementById('dueCount').textContent = due;
+        document.getElementById('reviewTotalCount').textContent = this.getLearnedCount();
         document.getElementById('todayLearnedCount').textContent = this.getTodayLearned();
         document.getElementById('dailyNewTotal').textContent = settings.dailyNew;
         document.getElementById('wrongCount').textContent = wrong;
@@ -399,21 +413,17 @@ const App = {
         let queue = [];
         
         if (mode === 'review') {
-            // 到期复习的卡片
-            const today = new Date();
-            today.setHours(0,0,0,0);
-            const end = today.getTime() + 86400000;
-            
-            const dueItems = [];
+            // 所有已学的词，排除今日已复习过的
+            const reviewedToday = new Set(this.getTodayReviewedIds());
+            const reviewItems = [];
             for (const id in this.cards) {
                 const c = this.cards[id];
                 if (c.status === 'new') continue;
-                if (c.nextReview && c.nextReview < end) {
-                    const item = this.pkg.items.find(i => i.id === id);
-                    if (item) dueItems.push(item);
-                }
+                if (reviewedToday.has(id)) continue; // 今日已复习过，跳过
+                const item = this.pkg.items.find(i => i.id === id);
+                if (item) reviewItems.push(item);
             }
-            queue = this.sortByOrder(dueItems);
+            queue = this.sortByOrder(reviewItems);
             document.getElementById('studyModalTitle').textContent = '复习';
         } else if (mode === 'learn') {
             // 新单词
@@ -555,12 +565,12 @@ const App = {
         this.saveProgress();
         
         // 新学的词，增加今日新学计数
-        if ((!card.status || card.status === 'new') && quality >= 1) {
+        if (this.currentMode === 'learn' && quality >= 1) {
             this.incrementLearned();
         }
         // 复习的词，增加今日复习计数
         if (this.currentMode === 'review' && card.status && card.status !== 'new') {
-            this.incrementReviewed();
+            this.incrementReviewed(cardId);
         }
         
         // 答错了加入错题本
@@ -576,8 +586,13 @@ const App = {
         
         this.currentIdx++;
         
-        // 1.5秒后下一个词
-        setTimeout(() => this.showCurrentCard(), 1500);
+        // 1.5秒后翻回正面，动画结束再加载下一个词
+        setTimeout(() => {
+            document.getElementById('cardFlip').classList.remove('flipped');
+            this.isFlipped = false;
+            // 等翻转动画结束（0.6s）后切换内容
+            setTimeout(() => this.showCurrentCard(), 600);
+        }, 1500);
     },
 
     finishStudy() {
