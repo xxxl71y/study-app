@@ -322,7 +322,6 @@ const App = {
 
     // ========== 渲染首页 ==========
     renderHome() {
-        const rec = this.getRecommendation();
         const streak = this.getStreak();
         const due = this.getDueCount();
         const settings = this.getSettings();
@@ -345,10 +344,6 @@ const App = {
         document.getElementById('todayLearnedCount').textContent = this.getTodayLearned();
         document.getElementById('dailyNewTotal').textContent = settings.dailyNew;
         document.getElementById('wrongCount').textContent = wrong;
-        
-        document.getElementById('mainActionIcon').textContent = rec.icon;
-        document.getElementById('mainActionText').textContent = rec.text;
-        document.getElementById('mainActionSub').textContent = rec.sub;
         
         // 进度圆环
         const circle = document.getElementById('progressCircle');

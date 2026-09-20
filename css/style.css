@@ -33,11 +33,11 @@ body {
     display: none;
     animation: fadeIn 0.3s ease;
     height: calc(100vh - 60px);
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
+    overflow: hidden;
 }
 .page.active {
-    display: block;
+    display: flex;
+    flex-direction: column;
 }
 
 @keyframes fadeIn {
@@ -53,6 +53,7 @@ body {
 /* ========== 首页 ========== */
 .home-header {
     padding: 16px 0 10px;
+    flex-shrink: 0;
 }
 
 .streak-row {
@@ -91,6 +92,7 @@ body {
     display: flex;
     justify-content: center;
     padding: 10px 0;
+    flex-shrink: 0;
 }
 
 .progress-ring {
@@ -128,18 +130,19 @@ body {
 .today-tasks {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
+    gap: 10px;
     margin-bottom: 12px;
+    flex-shrink: 0;
 }
 
 .task-item {
     background: var(--card);
     border-radius: var(--radius);
-    padding: 10px 6px;
+    padding: 16px 8px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 4px;
+    gap: 6px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.04);
     cursor: pointer;
     transition: transform 0.2s;
@@ -152,12 +155,12 @@ body {
 .task-top {
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 5px;
 }
 
 .task-dot {
-    width: 7px;
-    height: 7px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
 }
 
@@ -166,7 +169,7 @@ body {
 .task-dot.wrong { background: var(--danger); }
 
 .task-name {
-    font-size: 11px;
+    font-size: 13px;
     color: var(--text2);
     font-weight: 500;
 }
@@ -178,25 +181,25 @@ body {
 }
 
 .task-done {
-    font-size: 20px;
+    font-size: 24px;
     font-weight: 700;
     color: var(--text);
 }
 
 .task-sep {
-    font-size: 13px;
+    font-size: 15px;
     color: var(--text3);
     font-weight: 500;
 }
 
 .task-total {
-    font-size: 13px;
+    font-size: 15px;
     color: var(--text3);
     font-weight: 500;
 }
 
 .task-sub {
-    font-size: 10px;
+    font-size: 11px;
     color: var(--text3);
 }
 
@@ -242,6 +245,7 @@ body {
 /* 阶段信息 */
 .phase-info {
     margin-bottom: 12px;
+    flex-shrink: 0;
 }
 
 .phase-label {
@@ -286,6 +290,7 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 16px 0 12px;
+    flex-shrink: 0;
 }
 
 .page-header h2 {
@@ -306,6 +311,7 @@ body {
     display: flex;
     gap: 6px;
     margin-bottom: 10px;
+    flex-shrink: 0;
 }
 
 .wrong-tab {
@@ -335,6 +341,7 @@ body {
     cursor: pointer;
     display: flex;
     flex-direction: column;
+    flex-shrink: 0;
     align-items: center;
     gap: 2px;
     margin-bottom: 10px;
@@ -363,8 +370,11 @@ body {
 .wrong-list {
     background: var(--card);
     border-radius: var(--radius);
-    overflow: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    flex: 1;
+    min-height: 0;
 }
 
 .wrong-item {
