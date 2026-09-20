@@ -77,7 +77,7 @@ body {
 
 /* ========== 首页 ========== */
 .home-header {
-    padding: 28px 0 16px;
+    padding: 20px 0 12px;
     flex-shrink: 0;
 }
 
@@ -100,10 +100,10 @@ body {
 }
 
 .welcome-text {
-    font-size: 30px;
+    font-size: 26px;
     font-weight: 700;
     color: var(--text);
-    margin: 8px 0 4px;
+    margin: 6px 0 2px;
 }
 
 .date-text {
@@ -115,8 +115,8 @@ body {
 /* 双圆环 */
 .rings-row {
     display: flex;
-    gap: 14px;
-    padding: 14px 0;
+    gap: 12px;
+    padding: 8px 0;
     flex-shrink: 0;
 }
 
@@ -124,7 +124,7 @@ body {
     flex: 1;
     background: var(--card);
     border-radius: var(--radius);
-    padding: 18px 12px;
+    padding: 14px 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -132,16 +132,14 @@ body {
 }
 
 .ring-card.phase {
-    flex-direction: row;
     align-items: center;
-    gap: 10px;
-    padding: 18px 18px;
+    gap: 6px;
 }
 
 .progress-ring {
     position: relative;
-    width: 120px;
-    height: 120px;
+    width: 100px;
+    height: 100px;
     flex-shrink: 0;
 }
 
@@ -159,7 +157,7 @@ body {
 }
 
 .progress-percent {
-    font-size: 32px;
+    font-size: 26px;
     font-weight: 700;
     color: var(--primary);
 }
@@ -171,25 +169,25 @@ body {
 }
 
 .phase-detail {
-    flex: 1;
-    min-width: 0;
+    text-align: center;
+    margin-top: 6px;
 }
 
 .phase-title {
-    font-size: 18px;
+    font-size: 15px;
     font-weight: 700;
     color: #0c4a6e;
-    margin-bottom: 6px;
+    margin-bottom: 2px;
 }
 
 .phase-words {
-    font-size: 15px;
+    font-size: 13px;
     color: #0369a1;
 }
 
 .phase-edit-row {
     text-align: center;
-    padding: 4px 0 8px;
+    padding: 2px 0 6px;
     flex-shrink: 0;
 }
 
@@ -204,8 +202,8 @@ body {
 .today-tasks {
     display: flex;
     flex-direction: column;
-    gap: 14px;
-    margin-bottom: 12px;
+    gap: 12px;
+    margin-bottom: 4px;
     flex: 1 1 0;
     min-height: 0;
     justify-content: center;
