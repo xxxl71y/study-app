@@ -124,11 +124,12 @@ body {
     flex: 1;
     background: var(--card);
     border-radius: var(--radius);
-    padding: 18px 10px 46px;
+    padding: 16px 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 14px;
     align-self: stretch;
     position: relative;
     box-shadow: 0 2px 8px rgba(0,0,0,0.04);
@@ -139,11 +140,12 @@ body {
     justify-content: center;
 }
 
-.phase-detail {
-    position: absolute;
-    bottom: 12px;
-    left: 0;
-    right: 0;
+.ring-footer {
+    min-height: 34px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     text-align: center;
 }
 
@@ -1253,7 +1255,7 @@ body {
     .progress-ring { width: 100px; height: 100px; }
     .progress-percent { font-size: 24px; }
     .progress-label { font-size: 12px; }
-    .ring-card { padding: 14px 8px 40px; }
+    .ring-card { padding: 12px 8px; gap: 10px; }
     .rings-row { gap: 10px; padding: 6px 0; }
     .task-item { padding: 16px 18px; gap: 14px; }
     .task-item .task-icon { font-size: 30px; }
@@ -1277,7 +1279,7 @@ body {
     .progress-ring { width: 90px; height: 90px; }
     .progress-percent { font-size: 22px; }
     .progress-label { font-size: 11px; }
-    .ring-card { padding: 12px 6px 38px; }
+    .ring-card { padding: 10px 6px; gap: 8px; }
     .rings-row { gap: 8px; }
     .task-item { padding: 14px 16px; gap: 12px; }
     .task-item .task-icon { font-size: 26px; }
