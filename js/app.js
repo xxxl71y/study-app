@@ -30,19 +30,13 @@ const App = {
 
     // 阻止主页和错题本页面的触摸滚动（只允许列表内部滚动）
     preventScroll() {
-        const blocked = ['page-home', 'page-wrong'];
-        blocked.forEach(id => {
-            const el = document.getElementById(id);
-            if (!el) return;
-            el.addEventListener('touchmove', (e) => {
-                // 允许错题列表内部滚动
-                if (e.target.closest('.wrong-list')) return;
-                e.preventDefault();
-            }, { passive: false });
-        });
-        // 阻止body的橡皮筋滚动
-        document.body.addEventListener('touchmove', (e) => {
-            if (e.target.closest('#page-me') || e.target.closest('.wrong-list') || e.target.closest('.study-modal-body')) return;
+        document.addEventListener('touchmove', (e) => {
+            const target = e.target;
+            // 允许滚动的区域：我的页面、错题列表、学习弹窗
+            if (target.closest('#page-me')) return;
+            if (target.closest('.wrong-list')) return;
+            if (target.closest('.study-modal-body')) return;
+            // 其他区域全部阻止
             e.preventDefault();
         }, { passive: false });
     },
