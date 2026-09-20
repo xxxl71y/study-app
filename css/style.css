@@ -124,7 +124,7 @@ body {
     flex: 1;
     background: var(--card);
     border-radius: var(--radius);
-    padding: 14px 10px;
+    padding: 18px 10px 46px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -135,28 +135,22 @@ body {
 }
 
 .ring-card.phase {
-    flex-direction: column !important;
     align-items: center;
     justify-content: center;
-    gap: 6px;
-    align-self: stretch;
-}
-
-.ring-card-spacer {
-    height: 34px;
-    flex-shrink: 0;
 }
 
 .phase-detail {
+    position: absolute;
+    bottom: 12px;
+    left: 0;
+    right: 0;
     text-align: center;
-    margin-top: 4px;
-    flex-shrink: 0;
 }
 
 .progress-ring {
     position: relative;
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
     flex-shrink: 0;
 }
 
@@ -174,7 +168,7 @@ body {
 }
 
 .progress-percent {
-    font-size: 26px;
+    font-size: 30px;
     font-weight: 700;
     color: var(--primary);
 }
@@ -183,6 +177,7 @@ body {
     font-size: 14px;
     color: var(--text2);
     margin-top: 2px;
+    white-space: nowrap;
 }
 
 .phase-title {
@@ -1242,8 +1237,8 @@ body {
 @media (min-width: 414px) {
     .home-header { padding: 24px 0 14px; }
     .welcome-text { font-size: 28px; }
-    .progress-ring { width: 110px; height: 110px; }
-    .progress-percent { font-size: 28px; }
+    .progress-ring { width: 130px; height: 130px; }
+    .progress-percent { font-size: 32px; }
     .task-item { padding: 22px 24px; }
     .task-done { font-size: 38px; }
     .task-name { font-size: 23px; }
@@ -1255,10 +1250,10 @@ body {
     .welcome-text { font-size: 22px; }
     .date-text { font-size: 16px; }
     .streak-row { font-size: 15px; }
-    .progress-ring { width: 88px; height: 88px; }
-    .progress-percent { font-size: 22px; }
-    .progress-label { font-size: 11px; }
-    .ring-card { padding: 10px 8px; }
+    .progress-ring { width: 100px; height: 100px; }
+    .progress-percent { font-size: 24px; }
+    .progress-label { font-size: 12px; }
+    .ring-card { padding: 14px 8px 40px; }
     .rings-row { gap: 10px; padding: 6px 0; }
     .task-item { padding: 16px 18px; gap: 14px; }
     .task-item .task-icon { font-size: 30px; }
@@ -1279,9 +1274,10 @@ body {
     .card-meaning { font-size: 20px; }
     .home-header { padding: 12px 0 8px; }
     .welcome-text { font-size: 20px; }
-    .progress-ring { width: 80px; height: 80px; }
-    .progress-percent { font-size: 20px; }
-    .ring-card { padding: 8px 6px; }
+    .progress-ring { width: 90px; height: 90px; }
+    .progress-percent { font-size: 22px; }
+    .progress-label { font-size: 11px; }
+    .ring-card { padding: 12px 6px 38px; }
     .rings-row { gap: 8px; }
     .task-item { padding: 14px 16px; gap: 12px; }
     .task-item .task-icon { font-size: 26px; }
