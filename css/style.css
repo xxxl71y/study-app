@@ -40,14 +40,23 @@ body {
     flex-direction: column;
 }
 
-/* 我的页面可滚动但隐藏滚动条 */
-#page-me {
+/* 我的页面和错题本页面可滚动但隐藏滚动条 */
+#page-me,
+#page-wrong {
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     -ms-overflow-style: none;
 }
-#page-me::-webkit-scrollbar {
+#page-me::-webkit-scrollbar,
+#page-wrong::-webkit-scrollbar {
+    display: none;
+}
+.wrong-list {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+.wrong-list::-webkit-scrollbar {
     display: none;
 }
 
@@ -139,8 +148,8 @@ body {
 
 /* 今日任务 */
 .today-tasks {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    display: flex;
+    flex-direction: column;
     gap: 10px;
     margin-bottom: 12px;
     flex-shrink: 0;
@@ -148,11 +157,10 @@ body {
 
 .task-item {
     border-radius: var(--radius);
-    padding: 18px 8px;
+    padding: 14px 18px;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: 6px;
+    gap: 14px;
     cursor: pointer;
     transition: transform 0.2s;
     position: relative;
@@ -160,33 +168,38 @@ body {
 }
 
 .task-item:active {
-    transform: scale(0.96);
+    transform: scale(0.98);
 }
 
 .task-item.review {
     background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+    box-shadow: 0 4px 14px rgba(245, 158, 11, 0.3);
 }
 .task-item.new {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    box-shadow: 0 4px 14px rgba(102, 126, 234, 0.3);
 }
 .task-item.wrong {
     background: linear-gradient(135deg, #ef4444 0%, #f87171 100%);
+    box-shadow: 0 4px 14px rgba(239, 68, 68, 0.3);
 }
 
 .task-item .task-icon {
-    font-size: 22px;
-    margin-bottom: 2px;
+    font-size: 24px;
+    flex-shrink: 0;
 }
 
 .task-top {
     display: flex;
     align-items: center;
     gap: 5px;
+    flex-shrink: 0;
+    min-width: 70px;
 }
 
 .task-dot {
-    width: 8px;
-    height: 8px;
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
     background: rgba(255,255,255,0.6);
 }
@@ -196,7 +209,7 @@ body {
 .task-dot.wrong { background: rgba(255,255,255,0.6); }
 
 .task-name {
-    font-size: 13px;
+    font-size: 14px;
     color: rgba(255,255,255,0.9);
     font-weight: 500;
 }
@@ -205,10 +218,11 @@ body {
     display: flex;
     align-items: baseline;
     gap: 2px;
+    margin-left: auto;
 }
 
 .task-done {
-    font-size: 26px;
+    font-size: 24px;
     font-weight: 700;
     color: white;
 }
@@ -226,8 +240,9 @@ body {
 }
 
 .task-sub {
-    font-size: 11px;
+    font-size: 12px;
     color: rgba(255,255,255,0.6);
+    margin-left: auto;
 }
 
 /* 主按钮 */

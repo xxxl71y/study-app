@@ -34,6 +34,7 @@ const App = {
         
         try {
             const res = await fetch(`data/${pkgId}.json`);
+            if (!res.ok) throw new Error('Not found');
             this.pkg = await res.json();
         } catch (e) {
             // 从 localStorage 中找自定义包
@@ -44,7 +45,14 @@ const App = {
         }
         
         if (!this.pkg) {
-            console.error('No package found');
+            // 回退到内置包
+            localStorage.removeItem('current_package');
+            try {
+                const res = await fetch('data/cet6-vocabulary.json');
+                this.pkg = await res.json();
+            } catch (e2) {
+                this.pkg = { package_id: 'empty', title: '空', items: [], total_items: 0 };
+            }
         }
     },
 
