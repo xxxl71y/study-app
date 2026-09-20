@@ -53,9 +53,9 @@
                     <div class="task-count-row">
                         <span class="task-done" id="reviewedCount">0</span>
                         <span class="task-sep">/</span>
-                        <span class="task-total" id="dueCount">0</span>
+                        <span class="task-total" id="reviewTotalCount">0</span>
                     </div>
-                    <div class="task-sub">待复习</div>
+                    <div class="task-sub">总词数</div>
                 </div>
                 <div class="task-item" onclick="quickAction('learn')">
                     <div class="task-top">
@@ -332,14 +332,17 @@
     <script>
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' }).then((reg) => {
+                // 检测到新版本时自动刷新
                 reg.addEventListener('updatefound', () => {
                     const newWorker = reg.installing;
                     newWorker.addEventListener('statechange', () => {
                         if (newWorker.state === 'activated') {
+                            // 新版本激活后，刷新页面使用最新代码
                             window.location.reload();
                         }
                     });
                 });
+                // 每次加载都检查更新
                 if (reg.waiting) {
                     reg.waiting.postMessage({ type: 'SKIP_WAITING' });
                 }
