@@ -363,7 +363,6 @@ const App = {
         // 阶段信息
         const phase = this.getPhaseInfo();
         document.getElementById('phaseTitle').textContent = phase.phaseName;
-        document.getElementById('phaseDesc').textContent = phase.desc;
         document.getElementById('phaseWords').textContent = `${phase.learned} / ${phase.total} 词`;
         // 阶段圆环
         const phaseCircle = document.getElementById('phaseCircle');

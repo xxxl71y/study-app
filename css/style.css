@@ -40,17 +40,20 @@ body {
     flex-direction: column;
 }
 
-/* 我的页面和错题本页面可滚动但隐藏滚动条 */
-#page-me,
-#page-wrong {
+/* 我的页面可滚动但隐藏滚动条 */
+#page-me {
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     -ms-overflow-style: none;
 }
-#page-me::-webkit-scrollbar,
-#page-wrong::-webkit-scrollbar {
+#page-me::-webkit-scrollbar {
     display: none;
+}
+
+/* 错题本页面本身不滚动，只有列表滚动 */
+#page-wrong {
+    overflow: hidden;
 }
 
 @keyframes fadeIn {
@@ -100,18 +103,36 @@ body {
     color: var(--text2);
 }
 
-/* 进度圆环 */
-.today-progress {
-    display: flex;
-    justify-content: center;
-    padding: 14px 0;
+/* 双圆环 */
+.rings-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 10px 0;
     flex-shrink: 0;
+}
+
+.ring-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.ring-card.phase {
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
 }
 
 .progress-ring {
     position: relative;
-    width: 140px;
-    height: 140px;
+    width: 100px;
+    height: 100px;
+    flex-shrink: 0;
 }
 
 .progress-ring svg {
@@ -128,15 +149,45 @@ body {
 }
 
 .progress-percent {
-    font-size: 30px;
+    font-size: 24px;
     font-weight: 700;
     color: var(--primary);
 }
 
 .progress-label {
-    font-size: 13px;
+    font-size: 11px;
     color: var(--text2);
     margin-top: 1px;
+}
+
+.phase-detail {
+    flex: 1;
+    min-width: 0;
+}
+
+.phase-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #0c4a6e;
+    margin-bottom: 2px;
+}
+
+.phase-words {
+    font-size: 11px;
+    color: #0369a1;
+}
+
+.phase-edit-row {
+    text-align: center;
+    padding: 4px 0 8px;
+    flex-shrink: 0;
+}
+
+.phase-edit {
+    font-size: 13px;
+    color: var(--primary);
+    font-weight: 500;
+    cursor: pointer;
 }
 
 /* 今日任务 */
@@ -262,73 +313,6 @@ body {
 .btn-start-sub {
     font-size: 12px;
     opacity: 0.85;
-}
-
-/* 阶段信息 */
-.phase-info {
-    margin-bottom: 12px;
-    flex-shrink: 0;
-}
-
-.phase-label {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 8px;
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--text);
-}
-
-.phase-edit {
-    font-size: 15px;
-    color: var(--primary);
-    font-weight: 500;
-    cursor: pointer;
-}
-
-.phase-ring-row {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-    border-radius: var(--radius);
-    padding: 12px 16px;
-    border-left: 4px solid #0ea5e9;
-}
-
-.phase-ring {
-    position: relative;
-    width: 90px;
-    height: 90px;
-    flex-shrink: 0;
-}
-
-.phase-ring svg {
-    width: 100%;
-    height: 100%;
-}
-
-.phase-detail {
-    flex: 1;
-}
-
-.phase-title {
-    font-size: 16px;
-    font-weight: 700;
-    color: #0c4a6e;
-    margin-bottom: 2px;
-}
-
-.phase-desc {
-    font-size: 13px;
-    color: #0369a1;
-    margin-bottom: 4px;
-}
-
-.phase-words {
-    font-size: 12px;
-    color: #0369a1;
 }
 
 /* ========== 错题本 ========== */

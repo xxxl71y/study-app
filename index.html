@@ -23,23 +23,43 @@
                 <div class="date-text" id="todayDate"></div>
             </div>
 
-            <div class="today-progress">
-                <div class="progress-ring">
-                    <svg viewBox="0 0 120 120">
-                        <circle cx="60" cy="60" r="52" fill="none" stroke="#e2e8f0" stroke-width="8"/>
-                        <circle id="progressCircle" cx="60" cy="60" r="52" fill="none" stroke="url(#grad)" stroke-width="8"
-                                stroke-dasharray="326.7" stroke-dashoffset="326.7" stroke-linecap="round"
-                                transform="rotate(-90 60 60)"/>
-                        <defs>
-                            <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stop-color="#667eea"/>
-                                <stop offset="100%" stop-color="#764ba2"/>
-                            </linearGradient>
-                        </defs>
-                    </svg>
-                    <div class="progress-center">
-                        <div class="progress-percent" id="todayPercent">0%</div>
-                        <div class="progress-label">今日进度</div>
+            <div class="rings-row">
+                <div class="ring-card">
+                    <div class="progress-ring">
+                        <svg viewBox="0 0 120 120">
+                            <circle cx="60" cy="60" r="52" fill="none" stroke="#e2e8f0" stroke-width="8"/>
+                            <circle id="progressCircle" cx="60" cy="60" r="52" fill="none" stroke="url(#grad)" stroke-width="8"
+                                    stroke-dasharray="326.7" stroke-dashoffset="326.7" stroke-linecap="round"
+                                    transform="rotate(-90 60 60)"/>
+                            <defs>
+                                <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#667eea"/>
+                                    <stop offset="100%" stop-color="#764ba2"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                        <div class="progress-center">
+                            <div class="progress-percent" id="todayPercent">0%</div>
+                            <div class="progress-label">今日进度</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ring-card phase">
+                    <div class="progress-ring">
+                        <svg viewBox="0 0 120 120">
+                            <circle cx="60" cy="60" r="52" fill="none" stroke="#e2e8f0" stroke-width="8"/>
+                            <circle id="phaseCircle" cx="60" cy="60" r="52" fill="none" stroke="#0ea5e9" stroke-width="8"
+                                    stroke-dasharray="326.7" stroke-dashoffset="326.7" stroke-linecap="round"
+                                    transform="rotate(-90 60 60)"/>
+                        </svg>
+                        <div class="progress-center">
+                            <div class="progress-percent" id="phasePercent" style="color:#0ea5e9">0%</div>
+                            <div class="progress-label">已学</div>
+                        </div>
+                    </div>
+                    <div class="phase-detail">
+                        <div class="phase-title" id="phaseTitle">入门阶段</div>
+                        <div class="phase-words" id="phaseWords">0 / 0 词</div>
                     </div>
                 </div>
             </div>
@@ -81,30 +101,8 @@
                 </div>
             </div>
 
-            <div class="phase-info">
-                <div class="phase-label">
-                    <span>当前阶段</span>
-                    <span class="phase-edit" onclick="editPlan()">⚙️</span>
-                </div>
-                <div class="phase-ring-row">
-                    <div class="phase-ring">
-                        <svg viewBox="0 0 120 120">
-                            <circle cx="60" cy="60" r="52" fill="none" stroke="#e2e8f0" stroke-width="8"/>
-                            <circle id="phaseCircle" cx="60" cy="60" r="52" fill="none" stroke="#0ea5e9" stroke-width="8"
-                                    stroke-dasharray="326.7" stroke-dashoffset="326.7" stroke-linecap="round"
-                                    transform="rotate(-90 60 60)"/>
-                        </svg>
-                        <div class="progress-center">
-                            <div class="progress-percent" id="phasePercent" style="color:#0ea5e9">0%</div>
-                            <div class="progress-label">已学</div>
-                        </div>
-                    </div>
-                    <div class="phase-detail">
-                        <div class="phase-title" id="phaseTitle">入门阶段</div>
-                        <div class="phase-desc" id="phaseDesc">熟悉节奏，建立习惯</div>
-                        <div class="phase-words" id="phaseWords">0 / 0 词</div>
-                    </div>
-                </div>
+            <div class="phase-edit-row">
+                <span class="phase-edit" onclick="editPlan()">⚙️ 调整学习计划</span>
             </div>
         </div>
 
