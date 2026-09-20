@@ -177,6 +177,17 @@ const App = {
         this.markLearned();
     },
 
+    getTodayReviewed() {
+        return parseInt(localStorage.getItem(`reviewed_${this.getToday()}`) || '0');
+    },
+
+    incrementReviewed() {
+        const key = `reviewed_${this.getToday()}`;
+        const cur = parseInt(localStorage.getItem(key) || '0');
+        localStorage.setItem(key, cur + 1);
+        this.markLearned();
+    },
+
     getSettings() {
         return {
             dailyNew: parseInt(localStorage.getItem('daily_new') || '50'),
@@ -306,16 +317,19 @@ const App = {
         const actualNew = Math.min(remainingNew, newAvailable);
         const wrong = this.wrongWords.length;
         
-        // 今日进度
-        const todayTotal = due + actualNew;
-        const todayDone = this.getTodayLearned();
-        const percent = todayTotal > 0 ? Math.min(100, Math.round((todayDone / todayTotal) * 100)) : 0;
+        // 今日进度：按新学目标完成度计算
+        const learnedToday = this.getTodayLearned();
+        const percent = settings.dailyNew > 0 
+            ? Math.min(100, Math.round((learnedToday / settings.dailyNew) * 100)) 
+            : 0;
         
         // 更新DOM
         document.getElementById('streakDays').textContent = streak;
         document.getElementById('welcomeText').textContent = '你好，' + this.getUsername() + ' 👋';
+        document.getElementById('reviewedCount').textContent = this.getTodayReviewed();
         document.getElementById('dueCount').textContent = due;
-        document.getElementById('newCount').textContent = actualNew;
+        document.getElementById('todayLearnedCount').textContent = this.getTodayLearned();
+        document.getElementById('dailyNewTotal').textContent = settings.dailyNew;
         document.getElementById('wrongCount').textContent = wrong;
         
         document.getElementById('mainActionIcon').textContent = rec.icon;
@@ -399,7 +413,7 @@ const App = {
                     if (item) dueItems.push(item);
                 }
             }
-            queue = this.sortByOrder(dueItems).slice(0, settings.dailyReview || 999);
+            queue = this.sortByOrder(dueItems);
             document.getElementById('studyModalTitle').textContent = '复习';
         } else if (mode === 'learn') {
             // 新单词
@@ -540,9 +554,13 @@ const App = {
         this.cards[cardId] = updated;
         this.saveProgress();
         
-        // 新学的词，增加今日计数
+        // 新学的词，增加今日新学计数
         if ((!card.status || card.status === 'new') && quality >= 1) {
             this.incrementLearned();
+        }
+        // 复习的词，增加今日复习计数
+        if (this.currentMode === 'review' && card.status && card.status !== 'new') {
+            this.incrementReviewed();
         }
         
         // 答错了加入错题本
@@ -569,6 +587,7 @@ const App = {
         // 提示
         const count = this.studyQueue.length;
         if (count > 0) {
+            // 简单的完成提示，用原生alert
             setTimeout(() => alert(`完成了 ${count} 个，继续加油！`), 100);
         }
     },
@@ -586,15 +605,19 @@ const App = {
             return;
         }
         
+        // 从已学单词中抽题
         const learnedIds = Object.keys(this.cards);
         const shuffled = this.shuffle(learnedIds).slice(0, Math.min(10, learnedIds.length));
         
         this.quizQuestions = shuffled.map(id => {
             const item = this.pkg.items.find(i => i.id === id);
+            // 生成选项
             const wrongOptions = this.shuffle(
                 this.pkg.items.filter(i => i.id !== id).slice(0, 100)
             ).slice(0, 3).map(i => i.back);
+            
             const options = this.shuffle([item.back, ...wrongOptions]);
+            
             return {
                 id: id,
                 word: item.front,
@@ -655,6 +678,7 @@ const App = {
         if (isCorrect) {
             this.quizScore++;
         } else {
+            // 加入错题本
             this.addWrongWord(q.id, '测验');
         }
         
@@ -707,6 +731,7 @@ const App = {
         
         if (badge) badge.textContent = `${items.length} 个`;
         
+        // 显示/隐藏开始刷错题按钮
         if (startBtn && this.wrongTab === 'word') {
             if (items.length > 0) {
                 startBtn.style.display = 'flex';
@@ -752,7 +777,6 @@ const App = {
         
         const settings = this.getSettings();
         document.getElementById('dailyNewCount').textContent = settings.dailyNew;
-        document.getElementById('dailyReviewCount').textContent = settings.dailyReview;
         document.getElementById('serverchanKey').value = settings.serverchanKey;
         document.getElementById('pushTime').value = settings.pushTime;
         
@@ -764,11 +788,13 @@ const App = {
         this.renderPackageList();
     },
     
+    // 获取所有可用学习包
     getAllPackages() {
         const customPkgs = JSON.parse(localStorage.getItem('custom_packages') || '{}');
         const packages = [];
         const seen = new Set();
         
+        // 内置包
         packages.push({
             id: 'cet6-vocabulary',
             title: 'CET-6 核心词汇',
@@ -779,6 +805,7 @@ const App = {
         });
         seen.add('cet6-vocabulary');
         
+        // 自定义包（去重，跳过和内置包同名的）
         for (const id in customPkgs) {
             if (seen.has(id)) continue;
             const pkg = customPkgs[id];
@@ -794,6 +821,7 @@ const App = {
         return packages;
     },
     
+    // 渲染学习包列表
     renderPackageList() {
         const list = document.getElementById('packageList');
         if (!list) return;
@@ -815,6 +843,7 @@ const App = {
         `).join('');
     },
     
+    // 切换学习包
     switchPackage(pkgId) {
         const currentId = this.pkg?.package_id;
         if (pkgId === currentId) return;
@@ -823,6 +852,7 @@ const App = {
         location.reload();
     },
     
+    // 删除自定义学习包
     deletePackage(pkgId) {
         if (!confirm('确定删除这个学习包吗？学习进度也会一起删除。')) return;
         
@@ -830,9 +860,11 @@ const App = {
         delete customPkgs[pkgId];
         localStorage.setItem('custom_packages', JSON.stringify(customPkgs));
         
+        // 删除进度和错题
         localStorage.removeItem(`progress_${pkgId}`);
         localStorage.removeItem(`wrong_${pkgId}`);
         
+        // 如果删的是当前包，切回默认
         if (this.pkg?.package_id === pkgId) {
             localStorage.setItem('current_package', 'cet6-vocabulary');
             location.reload();
@@ -842,12 +874,11 @@ const App = {
     },
 
     adjustDaily(type, delta) {
-        const settings = this.getSettings();
-        const key = type === 'new' ? 'dailyNew' : 'dailyReview';
-        let val = settings[key] + delta;
+        if (type !== 'new') return;
+        let val = parseInt(localStorage.getItem('daily_new') || '50') + delta;
         val = Math.max(10, Math.min(500, val));
-        localStorage.setItem(type === 'new' ? 'daily_new' : 'daily_review', val);
-        document.getElementById(type === 'new' ? 'dailyNewCount' : 'dailyReviewCount').textContent = val;
+        localStorage.setItem('daily_new', val);
+        document.getElementById('dailyNewCount').textContent = val;
         this.renderHome();
     },
 
@@ -912,6 +943,7 @@ const App = {
         
         const [hour, minute] = settings.pushTime.split(':').map(Number);
         
+        // 每分钟检查一次是否到点
         this.pushTimer = setInterval(() => {
             const now = new Date();
             if (now.getHours() === hour && now.getMinutes() === minute) {
