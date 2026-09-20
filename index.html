@@ -45,7 +45,8 @@
             </div>
 
             <div class="today-tasks">
-                <div class="task-item" onclick="quickAction('review')">
+                <div class="task-item review" onclick="quickAction('review')">
+                    <div class="task-icon">🔄</div>
                     <div class="task-top">
                         <span class="task-dot review"></span>
                         <span class="task-name">复习</span>
@@ -57,7 +58,8 @@
                     </div>
                     <div class="task-sub">总词数</div>
                 </div>
-                <div class="task-item" onclick="quickAction('learn')">
+                <div class="task-item new" onclick="quickAction('learn')">
+                    <div class="task-icon">📖</div>
                     <div class="task-top">
                         <span class="task-dot new"></span>
                         <span class="task-name">今日新学</span>
@@ -69,7 +71,8 @@
                     </div>
                     <div class="task-sub">目标</div>
                 </div>
-                <div class="task-item" onclick="quickAction('wrong')">
+                <div class="task-item wrong" onclick="quickAction('wrong')">
+                    <div class="task-icon">❌</div>
                     <div class="task-top">
                         <span class="task-dot wrong"></span>
                         <span class="task-name">错题</span>
@@ -87,8 +90,14 @@
                     <span class="phase-edit" onclick="editPlan()">⚙️</span>
                 </div>
                 <div class="phase-card" id="phaseCard">
-                    <div class="phase-title" id="phaseTitle">入门阶段</div>
-                    <div class="phase-desc" id="phaseDesc">熟悉节奏，建立习惯</div>
+                    <div class="phase-left">
+                        <div class="phase-title" id="phaseTitle">入门阶段</div>
+                        <div class="phase-desc" id="phaseDesc">熟悉节奏，建立习惯</div>
+                    </div>
+                    <div class="phase-stats">
+                        <div class="phase-percent" id="phasePercent">0%</div>
+                        <div class="phase-words" id="phaseWords">0 / 0 词</div>
+                    </div>
                 </div>
             </div>
         </div>

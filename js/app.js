@@ -355,7 +355,9 @@ const App = {
         // 阶段信息
         const phase = this.getPhaseInfo();
         document.getElementById('phaseTitle').textContent = phase.phaseName;
-        document.getElementById('phaseDesc').textContent = `${phase.learned} / ${phase.total} 词 · ${phase.percent}%`;
+        document.getElementById('phaseDesc').textContent = phase.desc;
+        document.getElementById('phasePercent').textContent = phase.percent + '%';
+        document.getElementById('phaseWords').textContent = `${phase.learned} / ${phase.total} 词`;
     },
 
     updateDate() {

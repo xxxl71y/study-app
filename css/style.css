@@ -40,6 +40,17 @@ body {
     flex-direction: column;
 }
 
+/* 我的页面可滚动但隐藏滚动条 */
+#page-me {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+#page-me::-webkit-scrollbar {
+    display: none;
+}
+
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
@@ -91,14 +102,14 @@ body {
 .today-progress {
     display: flex;
     justify-content: center;
-    padding: 10px 0;
+    padding: 14px 0;
     flex-shrink: 0;
 }
 
 .progress-ring {
     position: relative;
-    width: 120px;
-    height: 120px;
+    width: 140px;
+    height: 140px;
 }
 
 .progress-ring svg {
@@ -115,13 +126,13 @@ body {
 }
 
 .progress-percent {
-    font-size: 26px;
+    font-size: 30px;
     font-weight: 700;
     color: var(--primary);
 }
 
 .progress-label {
-    font-size: 12px;
+    font-size: 13px;
     color: var(--text2);
     margin-top: 1px;
 }
@@ -136,20 +147,35 @@ body {
 }
 
 .task-item {
-    background: var(--card);
     border-radius: var(--radius);
-    padding: 16px 8px;
+    padding: 18px 8px;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 6px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
     cursor: pointer;
     transition: transform 0.2s;
+    position: relative;
+    overflow: hidden;
 }
 
 .task-item:active {
     transform: scale(0.96);
+}
+
+.task-item.review {
+    background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+}
+.task-item.new {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+.task-item.wrong {
+    background: linear-gradient(135deg, #ef4444 0%, #f87171 100%);
+}
+
+.task-item .task-icon {
+    font-size: 22px;
+    margin-bottom: 2px;
 }
 
 .task-top {
@@ -162,15 +188,16 @@ body {
     width: 8px;
     height: 8px;
     border-radius: 50%;
+    background: rgba(255,255,255,0.6);
 }
 
-.task-dot.review { background: var(--warning); }
-.task-dot.new { background: var(--primary); }
-.task-dot.wrong { background: var(--danger); }
+.task-dot.review { background: rgba(255,255,255,0.6); }
+.task-dot.new { background: rgba(255,255,255,0.6); }
+.task-dot.wrong { background: rgba(255,255,255,0.6); }
 
 .task-name {
     font-size: 13px;
-    color: var(--text2);
+    color: rgba(255,255,255,0.9);
     font-weight: 500;
 }
 
@@ -181,26 +208,26 @@ body {
 }
 
 .task-done {
-    font-size: 24px;
+    font-size: 26px;
     font-weight: 700;
-    color: var(--text);
+    color: white;
 }
 
 .task-sep {
     font-size: 15px;
-    color: var(--text3);
+    color: rgba(255,255,255,0.7);
     font-weight: 500;
 }
 
 .task-total {
     font-size: 15px;
-    color: var(--text3);
+    color: rgba(255,255,255,0.7);
     font-weight: 500;
 }
 
 .task-sub {
     font-size: 11px;
-    color: var(--text3);
+    color: rgba(255,255,255,0.6);
 }
 
 /* 主按钮 */
@@ -253,13 +280,13 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 6px;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 600;
     color: var(--text);
 }
 
 .phase-edit {
-    font-size: 14px;
+    font-size: 15px;
     color: var(--primary);
     font-weight: 500;
     cursor: pointer;
@@ -268,20 +295,40 @@ body {
 .phase-card {
     background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
     border-radius: var(--radius);
-    padding: 10px 14px;
-    border-left: 3px solid #0ea5e9;
+    padding: 14px 16px;
+    border-left: 4px solid #0ea5e9;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .phase-title {
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 700;
     color: #0c4a6e;
     margin-bottom: 2px;
 }
 
 .phase-desc {
+    font-size: 13px;
+    color: #0369a1;
+}
+
+.phase-stats {
+    text-align: right;
+}
+
+.phase-percent {
+    font-size: 22px;
+    font-weight: 700;
+    color: #0c4a6e;
+    line-height: 1;
+}
+
+.phase-words {
     font-size: 12px;
     color: #0369a1;
+    margin-top: 2px;
 }
 
 /* ========== 错题本 ========== */
