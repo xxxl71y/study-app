@@ -25,6 +25,26 @@ const App = {
         this.renderMe();
         this.updateDate();
         this.setupDailyPush();
+        this.preventScroll();
+    },
+
+    // 阻止主页和错题本页面的触摸滚动（只允许列表内部滚动）
+    preventScroll() {
+        const blocked = ['page-home', 'page-wrong'];
+        blocked.forEach(id => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.addEventListener('touchmove', (e) => {
+                // 允许错题列表内部滚动
+                if (e.target.closest('.wrong-list')) return;
+                e.preventDefault();
+            }, { passive: false });
+        });
+        // 阻止body的橡皮筋滚动
+        document.body.addEventListener('touchmove', (e) => {
+            if (e.target.closest('#page-me') || e.target.closest('.wrong-list') || e.target.closest('.study-modal-body')) return;
+            e.preventDefault();
+        }, { passive: false });
     },
 
     // 加载学习包
