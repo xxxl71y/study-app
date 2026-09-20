@@ -186,6 +186,16 @@ const App = {
         };
     },
 
+    getUsername() {
+        return localStorage.getItem('username') || '同学';
+    },
+
+    setUsername(name) {
+        if (name && name.trim()) {
+            localStorage.setItem('username', name.trim());
+        }
+    },
+
     // ========== 智能推荐 ==========
     getRecommendation() {
         const settings = this.getSettings();
@@ -302,6 +312,7 @@ const App = {
         
         // 更新DOM
         document.getElementById('streakDays').textContent = streak;
+        document.getElementById('username').textContent = this.getUsername();
         document.getElementById('dueCount').textContent = due;
         document.getElementById('newCount').textContent = actualNew;
         document.getElementById('wrongCount').textContent = wrong;
@@ -1056,10 +1067,20 @@ function switchWrongTab(t) { App.switchWrongTab(t); }
 function startWrongQuiz() { App.openStudyModal('wrong'); }
 function adjustDaily(t, d) { App.adjustDaily(t, d); }
 function editPlan() { App.editPlan(); }
+function saveWebhook() { App.saveWebhook(); }
+function testFeishu() { App.testFeishu(); }
 function saveServerchanKey() { App.saveServerchanKey(); }
 function savePushTime() { App.savePushTime(); }
 function testServerchan() { App.testServerchan(); }
 function importPackage(e) { App.importPackage(e); }
+function editUsername() {
+    const current = App.getUsername();
+    const name = prompt('输入你的名字', current);
+    if (name !== null && name.trim()) {
+        App.setUsername(name);
+        document.getElementById('username').textContent = App.getUsername();
+    }
+}
 function switchPackage(id) { App.switchPackage(id); }
 function deletePackage(id) { App.deletePackage(id); }
 function exportData() { App.exportData(); }
