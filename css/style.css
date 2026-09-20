@@ -52,13 +52,6 @@ body {
 #page-wrong::-webkit-scrollbar {
     display: none;
 }
-.wrong-list {
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-}
-.wrong-list::-webkit-scrollbar {
-    display: none;
-}
 
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
@@ -157,7 +150,7 @@ body {
 
 .task-item {
     border-radius: var(--radius);
-    padding: 14px 18px;
+    padding: 16px 18px;
     display: flex;
     align-items: center;
     gap: 14px;
@@ -189,36 +182,29 @@ body {
     flex-shrink: 0;
 }
 
-.task-top {
+.task-info {
     display: flex;
-    align-items: center;
-    gap: 5px;
-    flex-shrink: 0;
-    min-width: 70px;
+    flex-direction: column;
+    gap: 1px;
+    flex: 1;
 }
-
-.task-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.6);
-}
-
-.task-dot.review { background: rgba(255,255,255,0.6); }
-.task-dot.new { background: rgba(255,255,255,0.6); }
-.task-dot.wrong { background: rgba(255,255,255,0.6); }
 
 .task-name {
-    font-size: 14px;
-    color: rgba(255,255,255,0.9);
-    font-weight: 500;
+    font-size: 15px;
+    color: white;
+    font-weight: 600;
+}
+
+.task-sub {
+    font-size: 12px;
+    color: rgba(255,255,255,0.6);
 }
 
 .task-count-row {
     display: flex;
     align-items: baseline;
     gap: 2px;
-    margin-left: auto;
+    flex-shrink: 0;
 }
 
 .task-done {
@@ -237,12 +223,6 @@ body {
     font-size: 15px;
     color: rgba(255,255,255,0.7);
     font-weight: 500;
-}
-
-.task-sub {
-    font-size: 12px;
-    color: rgba(255,255,255,0.6);
-    margin-left: auto;
 }
 
 /* 主按钮 */
@@ -294,7 +274,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
     font-size: 14px;
     font-weight: 600;
     color: var(--text);
@@ -307,14 +287,30 @@ body {
     cursor: pointer;
 }
 
-.phase-card {
+.phase-ring-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
     background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
     border-radius: var(--radius);
-    padding: 14px 16px;
+    padding: 12px 16px;
     border-left: 4px solid #0ea5e9;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+}
+
+.phase-ring {
+    position: relative;
+    width: 90px;
+    height: 90px;
+    flex-shrink: 0;
+}
+
+.phase-ring svg {
+    width: 100%;
+    height: 100%;
+}
+
+.phase-detail {
+    flex: 1;
 }
 
 .phase-title {
@@ -327,23 +323,12 @@ body {
 .phase-desc {
     font-size: 13px;
     color: #0369a1;
-}
-
-.phase-stats {
-    text-align: right;
-}
-
-.phase-percent {
-    font-size: 22px;
-    font-weight: 700;
-    color: #0c4a6e;
-    line-height: 1;
+    margin-bottom: 4px;
 }
 
 .phase-words {
     font-size: 12px;
     color: #0369a1;
-    margin-top: 2px;
 }
 
 /* ========== 错题本 ========== */
@@ -437,6 +422,11 @@ body {
     box-shadow: 0 2px 8px rgba(0,0,0,0.04);
     flex: 1;
     min-height: 0;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+.wrong-list::-webkit-scrollbar {
+    display: none;
 }
 
 .wrong-item {

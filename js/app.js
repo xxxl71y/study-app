@@ -364,8 +364,15 @@ const App = {
         const phase = this.getPhaseInfo();
         document.getElementById('phaseTitle').textContent = phase.phaseName;
         document.getElementById('phaseDesc').textContent = phase.desc;
-        document.getElementById('phasePercent').textContent = phase.percent + '%';
         document.getElementById('phaseWords').textContent = `${phase.learned} / ${phase.total} 词`;
+        // 阶段圆环
+        const phaseCircle = document.getElementById('phaseCircle');
+        if (phaseCircle) {
+            const phaseOffset = circumference - (phase.percent / 100) * circumference;
+            phaseCircle.style.strokeDashoffset = phaseOffset;
+        }
+        const phasePercentEl = document.getElementById('phasePercent');
+        if (phasePercentEl) phasePercentEl.textContent = phase.percent + '%';
     },
 
     updateDate() {
