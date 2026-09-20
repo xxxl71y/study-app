@@ -76,21 +76,21 @@ body {
 
 /* ========== 首页 ========== */
 .home-header {
-    padding: 16px 0 10px;
+    padding: 20px 0 12px;
     flex-shrink: 0;
 }
 
 .streak-row {
     display: flex;
     align-items: center;
-    gap: 6px;
-    font-size: 13px;
+    gap: 8px;
+    font-size: 15px;
     color: var(--text2);
-    margin-bottom: 2px;
+    margin-bottom: 4px;
 }
 
 .streak-icon {
-    font-size: 14px;
+    font-size: 16px;
 }
 
 .streak-text b {
@@ -99,14 +99,14 @@ body {
 }
 
 .welcome-text {
-    font-size: 20px;
+    font-size: 24px;
     font-weight: 700;
     color: var(--text);
-    margin: 4px 0 2px;
+    margin: 6px 0 2px;
 }
 
 .date-text {
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 500;
     color: var(--text2);
 }
@@ -114,8 +114,8 @@ body {
 /* 双圆环 */
 .rings-row {
     display: flex;
-    gap: 10px;
-    padding: 8px 0;
+    gap: 12px;
+    padding: 10px 0;
     flex-shrink: 0;
 }
 
@@ -123,7 +123,7 @@ body {
     flex: 1;
     background: var(--card);
     border-radius: var(--radius);
-    padding: 10px 8px;
+    padding: 14px 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -133,14 +133,14 @@ body {
 .ring-card.phase {
     flex-direction: row;
     align-items: center;
-    gap: 6px;
-    padding: 10px 12px;
+    gap: 8px;
+    padding: 14px 14px;
 }
 
 .progress-ring {
     position: relative;
-    width: 90px;
-    height: 90px;
+    width: 100px;
+    height: 100px;
     flex-shrink: 0;
 }
 
@@ -158,15 +158,15 @@ body {
 }
 
 .progress-percent {
-    font-size: 24px;
+    font-size: 26px;
     font-weight: 700;
     color: var(--primary);
 }
 
 .progress-label {
-    font-size: 11px;
+    font-size: 12px;
     color: var(--text2);
-    margin-top: 1px;
+    margin-top: 2px;
 }
 
 .phase-detail {
@@ -175,25 +175,25 @@ body {
 }
 
 .phase-title {
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 700;
     color: #0c4a6e;
-    margin-bottom: 2px;
+    margin-bottom: 4px;
 }
 
 .phase-words {
-    font-size: 11px;
+    font-size: 13px;
     color: #0369a1;
 }
 
 .phase-edit-row {
     text-align: center;
-    padding: 4px 0 8px;
+    padding: 6px 0 10px;
     flex-shrink: 0;
 }
 
 .phase-edit {
-    font-size: 13px;
+    font-size: 15px;
     color: var(--primary);
     font-weight: 500;
     cursor: pointer;
@@ -203,17 +203,17 @@ body {
 .today-tasks {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    margin-bottom: 8px;
+    gap: 12px;
+    margin-bottom: 10px;
     flex-shrink: 0;
 }
 
 .task-item {
     border-radius: var(--radius);
-    padding: 14px 16px;
+    padding: 18px 20px;
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 16px;
     cursor: pointer;
     transition: transform 0.2s;
     position: relative;
@@ -238,49 +238,49 @@ body {
 }
 
 .task-item .task-icon {
-    font-size: 24px;
+    font-size: 28px;
     flex-shrink: 0;
 }
 
 .task-info {
     display: flex;
     flex-direction: column;
-    gap: 1px;
+    gap: 2px;
     flex: 1;
 }
 
 .task-name {
-    font-size: 15px;
+    font-size: 17px;
     color: white;
     font-weight: 600;
 }
 
 .task-sub {
-    font-size: 12px;
+    font-size: 13px;
     color: rgba(255,255,255,0.6);
 }
 
 .task-count-row {
     display: flex;
     align-items: baseline;
-    gap: 2px;
+    gap: 3px;
     flex-shrink: 0;
 }
 
 .task-done {
-    font-size: 24px;
+    font-size: 28px;
     font-weight: 700;
     color: white;
 }
 
 .task-sep {
-    font-size: 15px;
+    font-size: 17px;
     color: rgba(255,255,255,0.7);
     font-weight: 500;
 }
 
 .task-total {
-    font-size: 15px;
+    font-size: 17px;
     color: rgba(255,255,255,0.7);
     font-weight: 500;
 }
