@@ -25,7 +25,8 @@ body {
     background: var(--bg);
     color: var(--text);
     min-height: 100vh;
-    overflow: hidden;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
 }
 
 /* 页面切换 */
@@ -33,21 +34,24 @@ body {
     display: none;
     animation: fadeIn 0.3s ease;
     height: calc(100vh - 60px);
-    overflow: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 .page.active {
     display: flex;
     flex-direction: column;
 }
 
-/* 我的页面可滚动但隐藏滚动条 */
-#page-me {
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
+/* 所有页面隐藏滚动条但可滚动 */
+#page-home,
+#page-me,
+#page-wrong {
     scrollbar-width: none;
     -ms-overflow-style: none;
 }
-#page-me::-webkit-scrollbar {
+#page-home::-webkit-scrollbar,
+#page-me::-webkit-scrollbar,
+#page-wrong::-webkit-scrollbar {
     display: none;
 }
 
@@ -105,17 +109,17 @@ body {
 
 /* 双圆环 */
 .rings-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
     gap: 10px;
-    padding: 10px 0;
+    padding: 8px 0;
     flex-shrink: 0;
 }
 
 .ring-card {
+    flex: 1;
     background: var(--card);
     border-radius: var(--radius);
-    padding: 10px;
+    padding: 10px 8px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -125,13 +129,14 @@ body {
 .ring-card.phase {
     flex-direction: row;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
+    padding: 10px 12px;
 }
 
 .progress-ring {
     position: relative;
-    width: 100px;
-    height: 100px;
+    width: 90px;
+    height: 90px;
     flex-shrink: 0;
 }
 
@@ -194,17 +199,17 @@ body {
 .today-tasks {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    margin-bottom: 12px;
+    gap: 8px;
+    margin-bottom: 8px;
     flex-shrink: 0;
 }
 
 .task-item {
     border-radius: var(--radius);
-    padding: 16px 18px;
+    padding: 14px 16px;
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 12px;
     cursor: pointer;
     transition: transform 0.2s;
     position: relative;
