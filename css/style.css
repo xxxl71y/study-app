@@ -28,6 +28,7 @@ body {
     min-height: 100vh;
 }
 
+/* 页面切换 */
 .page {
     display: none;
     animation: fadeIn 0.3s ease;
@@ -45,6 +46,7 @@ body {
     padding: 0 20px;
 }
 
+/* ========== 首页 ========== */
 .home-header {
     padding: 24px 0 16px;
 }
@@ -67,11 +69,38 @@ body {
     font-weight: 700;
 }
 
+.username-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 6px 0 4px;
+}
+
+.username {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+    cursor: pointer;
+}
+
+.username-edit {
+    font-size: 14px;
+    color: var(--text3);
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.username-row:hover .username-edit {
+    opacity: 1;
+}
+
 .date-text {
     font-size: 22px;
     font-weight: 700;
 }
 
+/* 进度圆环 */
 .today-progress {
     display: flex;
     justify-content: center;
@@ -109,6 +138,7 @@ body {
     margin-top: 2px;
 }
 
+/* 今日任务 */
 .today-tasks {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -149,6 +179,7 @@ body {
     color: var(--text);
 }
 
+/* 主按钮 */
 .main-action {
     margin-bottom: 20px;
 }
@@ -188,6 +219,7 @@ body {
     opacity: 0.85;
 }
 
+/* 快捷入口 */
 .quick-actions {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -223,6 +255,7 @@ body {
     color: var(--text2);
 }
 
+/* 阶段信息 */
 .phase-info {
     margin-bottom: 20px;
 }
@@ -263,6 +296,7 @@ body {
     color: #0369a1;
 }
 
+/* ========== 错题本 ========== */
 .page-header {
     display: flex;
     justify-content: space-between;
@@ -402,6 +436,7 @@ body {
     font-size: 14px;
 }
 
+/* ========== 我的 ========== */
 .me-stats {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -647,6 +682,7 @@ body {
     line-height: 1.8;
 }
 
+/* ========== 底部导航 ========== */
 .bottom-nav {
     position: fixed;
     bottom: 0;
@@ -686,6 +722,7 @@ body {
     font-weight: 500;
 }
 
+/* ========== 学习弹窗 ========== */
 .study-modal {
     position: fixed;
     top: 0;
@@ -743,6 +780,7 @@ body {
     overflow-y: auto;
 }
 
+/* 翻转卡片 */
 .card-flip {
     perspective: 1000px;
     width: 100%;
@@ -829,11 +867,13 @@ body {
     line-height: 1.5;
 }
 
+/* 评分区 */
 .rating-area {
     width: 100%;
     max-width: 400px;
 }
 
+/* 选择题区域 */
 .choice-area {
     width: 100%;
     max-width: 400px;
@@ -922,6 +962,7 @@ body {
 .choice-feedback.correct { color: var(--secondary); }
 .choice-feedback.wrong { color: var(--danger); }
 
+/* 开始按钮区 */
 .start-area {
     text-align: center;
 }
@@ -942,6 +983,7 @@ body {
     transform: scale(0.98);
 }
 
+/* ========== 测验 ========== */
 .quiz-question {
     width: 100%;
     max-width: 400px;
