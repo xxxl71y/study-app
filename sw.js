@@ -3,7 +3,7 @@
  * 策略：页面用 network first，静态资源用 stale-while-revalidate
  */
 
-const CACHE_NAME = 'study-app-v11';
+const CACHE_NAME = 'study-app-v12';
 const ASSETS_TO_CACHE = [
     './',
     './index.html',

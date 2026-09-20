@@ -38,10 +38,11 @@ body {
     animation: fadeIn 0.3s ease;
     height: calc(100% - 60px);
     overflow: hidden;
+    display: none;
+    flex-direction: column;
 }
 .page.active {
-    display: flex;
-    flex-direction: column;
+    display: flex !important;
 }
 
 /* 主页和错题本页面禁止滚动 */
@@ -188,7 +189,7 @@ body {
 
 .phase-edit-row {
     text-align: center;
-    padding: 8px 0 12px;
+    padding: 4px 0 8px;
     flex-shrink: 0;
 }
 
@@ -205,8 +206,8 @@ body {
     flex-direction: column;
     gap: 14px;
     margin-bottom: 12px;
-    flex-shrink: 0;
-    flex: 1;
+    flex: 1 1 0;
+    min-height: 0;
     justify-content: center;
 }
 
