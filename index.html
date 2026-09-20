@@ -81,38 +81,23 @@
                 </div>
             </div>
 
+            <div class="phase-info">
+                <div class="phase-label">
+                    <span>当前阶段</span>
+                    <span class="phase-edit" onclick="editPlan()">⚙️</span>
+                </div>
+                <div class="phase-card" id="phaseCard">
+                    <div class="phase-title" id="phaseTitle">入门阶段</div>
+                    <div class="phase-desc" id="phaseDesc">熟悉节奏，建立习惯</div>
+                </div>
+            </div>
+
             <div class="main-action">
                 <button class="btn-start" id="mainActionBtn" onclick="startMainAction()">
                     <span class="btn-start-icon" id="mainActionIcon">🎯</span>
                     <span class="btn-start-text" id="mainActionText">开始今日学习</span>
                     <span class="btn-start-sub" id="mainActionSub">先复习，再学新词</span>
                 </button>
-            </div>
-
-            <div class="quick-actions">
-                <button class="quick-btn" onclick="quickAction('review')">
-                    <span class="quick-icon">🔄</span>
-                    <span class="quick-text">复习</span>
-                </button>
-                <button class="quick-btn" onclick="quickAction('learn')">
-                    <span class="quick-icon">📖</span>
-                    <span class="quick-text">学新</span>
-                </button>
-                <button class="quick-btn" onclick="quickAction('wrong')">
-                    <span class="quick-icon">❌</span>
-                    <span class="quick-text">错题</span>
-                </button>
-            </div>
-
-            <div class="phase-info">
-                <div class="phase-label">
-                    <span>当前阶段</span>
-                    <span class="phase-edit" onclick="editPlan()">⚙️ 调整计划</span>
-                </div>
-                <div class="phase-card" id="phaseCard">
-                    <div class="phase-title" id="phaseTitle">第 1 天 · 入门</div>
-                    <div class="phase-desc" id="phaseDesc">今天学习第 1 批核心词汇</div>
-                </div>
             </div>
         </div>
 

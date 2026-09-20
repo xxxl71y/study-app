@@ -24,14 +24,17 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
     background: var(--bg);
     color: var(--text);
-    padding-bottom: 70px;
     min-height: 100vh;
+    overflow: hidden;
 }
 
 /* 页面切换 */
 .page {
     display: none;
     animation: fadeIn 0.3s ease;
+    height: calc(100vh - 60px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 .page.active {
     display: block;
@@ -44,24 +47,25 @@ body {
 
 .app-main {
     padding: 0 20px;
+    padding-bottom: 10px;
 }
 
 /* ========== 首页 ========== */
 .home-header {
-    padding: 24px 0 16px;
+    padding: 16px 0 10px;
 }
 
 .streak-row {
     display: flex;
     align-items: center;
     gap: 6px;
-    font-size: 14px;
+    font-size: 13px;
     color: var(--text2);
-    margin-bottom: 4px;
+    margin-bottom: 2px;
 }
 
 .streak-icon {
-    font-size: 16px;
+    font-size: 14px;
 }
 
 .streak-text b {
@@ -70,14 +74,14 @@ body {
 }
 
 .welcome-text {
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 700;
     color: var(--text);
-    margin: 6px 0 4px;
+    margin: 4px 0 2px;
 }
 
 .date-text {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 500;
     color: var(--text2);
 }
@@ -86,13 +90,13 @@ body {
 .today-progress {
     display: flex;
     justify-content: center;
-    padding: 20px 0;
+    padding: 10px 0;
 }
 
 .progress-ring {
     position: relative;
-    width: 160px;
-    height: 160px;
+    width: 120px;
+    height: 120px;
 }
 
 .progress-ring svg {
@@ -109,33 +113,33 @@ body {
 }
 
 .progress-percent {
-    font-size: 32px;
+    font-size: 26px;
     font-weight: 700;
     color: var(--primary);
 }
 
 .progress-label {
-    font-size: 13px;
+    font-size: 12px;
     color: var(--text2);
-    margin-top: 2px;
+    margin-top: 1px;
 }
 
 /* 今日任务 */
 .today-tasks {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    margin-bottom: 20px;
+    gap: 8px;
+    margin-bottom: 12px;
 }
 
 .task-item {
     background: var(--card);
     border-radius: var(--radius);
-    padding: 14px 10px;
+    padding: 10px 6px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 6px;
+    gap: 4px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.04);
     cursor: pointer;
     transition: transform 0.2s;
@@ -148,12 +152,12 @@ body {
 .task-top {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 4px;
 }
 
 .task-dot {
-    width: 8px;
-    height: 8px;
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
 }
 
@@ -162,7 +166,7 @@ body {
 .task-dot.wrong { background: var(--danger); }
 
 .task-name {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--text2);
     font-weight: 500;
 }
@@ -174,31 +178,31 @@ body {
 }
 
 .task-done {
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 700;
     color: var(--text);
 }
 
 .task-sep {
-    font-size: 14px;
+    font-size: 13px;
     color: var(--text3);
     font-weight: 500;
 }
 
 .task-total {
-    font-size: 14px;
+    font-size: 13px;
     color: var(--text3);
     font-weight: 500;
 }
 
 .task-sub {
-    font-size: 11px;
+    font-size: 10px;
     color: var(--text3);
 }
 
 /* 主按钮 */
 .main-action {
-    margin-bottom: 20px;
+    margin-bottom: 12px;
 }
 
 .btn-start {
@@ -206,14 +210,14 @@ body {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     border: none;
-    border-radius: 20px;
-    padding: 24px;
+    border-radius: 18px;
+    padding: 18px;
     cursor: pointer;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 4px;
-    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+    gap: 2px;
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.35);
     transition: transform 0.2s;
 }
 
@@ -222,73 +226,36 @@ body {
 }
 
 .btn-start-icon {
-    font-size: 32px;
-    margin-bottom: 4px;
+    font-size: 26px;
 }
 
 .btn-start-text {
-    font-size: 20px;
+    font-size: 17px;
     font-weight: 700;
 }
 
 .btn-start-sub {
-    font-size: 13px;
-    opacity: 0.85;
-}
-
-/* 快捷入口 */
-.quick-actions {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    margin-bottom: 24px;
-}
-
-.quick-btn {
-    background: var(--card);
-    border: none;
-    border-radius: var(--radius);
-    padding: 14px 8px;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-    transition: all 0.2s;
-}
-
-.quick-btn:active {
-    transform: scale(0.95);
-    background: #f1f5f9;
-}
-
-.quick-icon {
-    font-size: 24px;
-}
-
-.quick-text {
     font-size: 12px;
-    color: var(--text2);
+    opacity: 0.85;
 }
 
 /* 阶段信息 */
 .phase-info {
-    margin-bottom: 20px;
+    margin-bottom: 12px;
 }
 
 .phase-label {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
-    font-size: 14px;
+    margin-bottom: 6px;
+    font-size: 13px;
     font-weight: 600;
     color: var(--text);
 }
 
 .phase-edit {
-    font-size: 13px;
+    font-size: 14px;
     color: var(--primary);
     font-weight: 500;
     cursor: pointer;
@@ -297,19 +264,19 @@ body {
 .phase-card {
     background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
     border-radius: var(--radius);
-    padding: 16px;
-    border-left: 4px solid #0ea5e9;
+    padding: 10px 14px;
+    border-left: 3px solid #0ea5e9;
 }
 
 .phase-title {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 700;
     color: #0c4a6e;
-    margin-bottom: 4px;
+    margin-bottom: 2px;
 }
 
 .phase-desc {
-    font-size: 13px;
+    font-size: 12px;
     color: #0369a1;
 }
 
@@ -318,36 +285,36 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 24px 0 16px;
+    padding: 16px 0 12px;
 }
 
 .page-header h2 {
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 700;
 }
 
 .badge {
     background: var(--primary);
     color: white;
-    padding: 4px 12px;
-    border-radius: 12px;
-    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 10px;
+    font-size: 11px;
     font-weight: 600;
 }
 
 .wrong-tabs {
     display: flex;
-    gap: 8px;
-    margin-bottom: 16px;
+    gap: 6px;
+    margin-bottom: 10px;
 }
 
 .wrong-tab {
     flex: 1;
-    padding: 10px;
+    padding: 8px;
     border: none;
     border-radius: 10px;
     background: var(--card);
-    font-size: 14px;
+    font-size: 13px;
     color: var(--text2);
     cursor: pointer;
     font-weight: 500;
@@ -364,14 +331,14 @@ body {
     color: white;
     border: none;
     border-radius: var(--radius);
-    padding: 18px;
+    padding: 14px;
     cursor: pointer;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 4px;
-    margin-bottom: 16px;
-    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.3);
+    gap: 2px;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 16px rgba(239, 68, 68, 0.3);
     transition: transform 0.2s;
 }
 
@@ -380,16 +347,16 @@ body {
 }
 
 .wrong-start-icon {
-    font-size: 28px;
+    font-size: 22px;
 }
 
 .wrong-start-text {
-    font-size: 18px;
+    font-size: 15px;
     font-weight: 700;
 }
 
 .wrong-start-sub {
-    font-size: 13px;
+    font-size: 12px;
     opacity: 0.85;
 }
 
@@ -404,7 +371,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 14px 16px;
+    padding: 10px 14px;
     border-bottom: 1px solid var(--border);
 }
 
@@ -413,27 +380,27 @@ body {
 }
 
 .wrong-word {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 600;
 }
 
 .wrong-meaning {
-    font-size: 13px;
+    font-size: 12px;
     color: var(--text2);
-    margin-top: 2px;
+    margin-top: 1px;
 }
 
 .wrong-source {
-    font-size: 11px;
+    font-size: 10px;
     color: var(--text3);
-    margin-top: 4px;
+    margin-top: 2px;
 }
 
 .wrong-delete {
     background: none;
     border: none;
     color: var(--text3);
-    font-size: 18px;
+    font-size: 16px;
     cursor: pointer;
     padding: 8px;
 }

@@ -64,7 +64,7 @@ const SM2 = {
             }
             
             // 如果连续答对多次，标记为已掌握
-            if (card.repetitions >= 5 && card.easinessFactor >= 2.5 && card.interval >= 21) {
+            if (card.repetitions >= 4 && card.easinessFactor >= 2.3 && card.interval >= 14) {
                 card.status = 'mastered';
             }
         }
