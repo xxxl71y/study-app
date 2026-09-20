@@ -566,6 +566,56 @@ body {
     text-align: center;
 }
 
+.sort-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0 0 14px;
+}
+
+.sort-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    padding: 8px 0;
+}
+
+.sort-option input[type="radio"] {
+    display: none;
+}
+
+.sort-radio {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--border);
+    border-radius: 50%;
+    position: relative;
+    flex-shrink: 0;
+    transition: border-color 0.2s;
+}
+
+.sort-option input[type="radio"]:checked + .sort-radio {
+    border-color: var(--primary);
+}
+
+.sort-option input[type="radio"]:checked + .sort-radio::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px;
+    height: 10px;
+    background: var(--primary);
+    border-radius: 50%;
+}
+
+.sort-label {
+    font-size: 14px;
+    color: var(--text);
+}
+
 .package-name {
     font-size: 13px;
     color: var(--text2);
