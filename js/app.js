@@ -352,12 +352,6 @@ const App = {
         const actualNew = Math.min(remainingNew, newAvailable);
         const wrong = this.wrongWords.length;
         
-        // 今日进度：按新学目标完成度计算
-        const learnedToday = this.getTodayLearned();
-        const percent = settings.dailyNew > 0 
-            ? Math.min(100, Math.round((learnedToday / settings.dailyNew) * 100)) 
-            : 0;
-        
         // 更新DOM
         document.getElementById('streakDays').textContent = streak;
         document.getElementById('welcomeText').textContent = '你好，' + this.getUsername() + ' 👋';
@@ -367,22 +361,16 @@ const App = {
         document.getElementById('dailyNewTotal').textContent = settings.dailyNew;
         document.getElementById('wrongCount').textContent = wrong;
         
-        // 进度圆环
-        const circle = document.getElementById('progressCircle');
-        const circumference = 2 * Math.PI * 52;
-        const offset = circumference - (percent / 100) * circumference;
-        circle.style.strokeDashoffset = offset;
-        document.getElementById('todayPercent').textContent = percent + '%';
-        
         // 阶段信息
         const phase = this.getPhaseInfo();
         document.getElementById('phaseTitle').textContent = phase.phaseName;
         document.getElementById('phaseWords').textContent = `${phase.learned} / ${phase.total} 词`;
-        // 阶段圆环
-        const phaseCircle = document.getElementById('phaseCircle');
-        if (phaseCircle) {
+        // 阶段圆角矩形环
+        const phaseRect = document.getElementById('phaseRect');
+        const circumference = 819; // 圆角矩形周长（viewBox 320x130, rx24）
+        if (phaseRect) {
             const phaseOffset = circumference - (phase.percent / 100) * circumference;
-            phaseCircle.style.strokeDashoffset = phaseOffset;
+            phaseRect.style.strokeDashoffset = phaseOffset;
         }
         const phasePercentEl = document.getElementById('phasePercent');
         if (phasePercentEl) phasePercentEl.textContent = phase.percent + '%';

@@ -1,0 +1,69 @@
+{
+  "package_id": "programming-terms",
+  "title": "编程常用术语",
+  "type": "vocabulary",
+  "description": "程序员必备英语词汇",
+  "total_items": 10,
+  "items": [
+    {
+      "id": "prog_001",
+      "front": "variable",
+      "back": "变量",
+      "extra": { "pos": "n.", "tags": ["基础"] }
+    },
+    {
+      "id": "prog_002",
+      "front": "function",
+      "back": "函数",
+      "extra": { "pos": "n.", "tags": ["基础"] }
+    },
+    {
+      "id": "prog_003",
+      "front": "array",
+      "back": "数组",
+      "extra": { "pos": "n.", "tags": ["基础"] }
+    },
+    {
+      "id": "prog_004",
+      "front": "loop",
+      "back": "循环",
+      "extra": { "pos": "n.", "tags": ["基础"] }
+    },
+    {
+      "id": "prog_005",
+      "front": "debug",
+      "back": "调试，除错",
+      "extra": { "pos": "v.", "tags": ["基础"] }
+    },
+    {
+      "id": "prog_006",
+      "front": "algorithm",
+      "back": "算法",
+      "extra": { "pos": "n.", "tags": ["进阶"] }
+    },
+    {
+      "id": "prog_007",
+      "front": "recursion",
+      "back": "递归",
+      "extra": { "pos": "n.", "tags": ["进阶"] }
+    },
+    {
+      "id": "prog_008",
+      "front": "compile",
+      "back": "编译",
+      "extra": { "pos": "v.", "tags": ["基础"] }
+    },
+    {
+      "id": "prog_009",
+      "front": "inheritance",
+      "back": "继承",
+      "extra": { "pos": "n.", "tags": ["面向对象"] }
+    },
+    {
+      "id": "prog_010",
+      "front": "polymorphism",
+      "back": "多态",
+      "extra": { "pos": "n.", "tags": ["面向对象"] }
+    }
+  ]
+}
