@@ -131,6 +131,7 @@ body {
     justify-content: center;
     box-shadow: 0 2px 8px rgba(0,0,0,0.04);
     align-self: stretch;
+    position: relative;
 }
 
 .ring-card.phase {
@@ -139,6 +140,11 @@ body {
     justify-content: center;
     gap: 6px;
     align-self: stretch;
+}
+
+.ring-card-spacer {
+    height: 34px;
+    flex-shrink: 0;
 }
 
 .phase-detail {
