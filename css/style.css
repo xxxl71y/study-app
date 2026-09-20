@@ -69,35 +69,17 @@ body {
     font-weight: 700;
 }
 
-.username-row {
-    display: flex;
-    align-items: center;
-    gap: 6px;
+.welcome-text {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text);
     margin: 6px 0 4px;
 }
 
-.username {
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--text);
-    cursor: pointer;
-}
-
-.username-edit {
-    font-size: 14px;
-    color: var(--text3);
-    cursor: pointer;
-    opacity: 0;
-    transition: opacity 0.2s;
-}
-
-.username-row:hover .username-edit {
-    opacity: 1;
-}
-
 .date-text {
-    font-size: 22px;
-    font-weight: 700;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text2);
 }
 
 /* 进度圆环 */
@@ -437,6 +419,52 @@ body {
 }
 
 /* ========== 我的 ========== */
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
+    transition: transform 0.2s;
+}
+
+.user-profile:active {
+    transform: scale(0.98);
+}
+
+.user-avatar {
+    width: 56px;
+    height: 56px;
+    background: rgba(255,255,255,0.25);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    flex-shrink: 0;
+}
+
+.user-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.user-name {
+    font-size: 20px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 4px;
+}
+
+.user-edit-hint {
+    font-size: 13px;
+    color: rgba(255,255,255,0.75);
+}
+
 .me-stats {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
