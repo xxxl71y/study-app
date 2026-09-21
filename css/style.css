@@ -117,9 +117,8 @@ body {
     position: relative;
     width: 100%;
     flex-shrink: 0;
-    background: var(--card);
+    background: transparent;
     border-radius: 24px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
     margin: 6px 0;
     overflow: hidden;
 }
